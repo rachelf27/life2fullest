@@ -1,0 +1,23 @@
+/node_modules
+package-lock.json
+.DS_Store // only include this if you are on a Mac
+/build
+npm-debug.log
+.env
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars likely sensitive data files
+*.tfvars
+*.tfvars.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+.dockerignore

@@ -1,0 +1,32 @@
+{
+  "name": "life2fullest",
+  "version": "1.0.0",
+  "description": "E-commerce app for candles, soaps, clothes and more",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rachelf27/life2fullest.git"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "react.js",
+    "e-commerce"
+  ],
+  "author": "Rachel Murphy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rachelf27/life2fullest/issues"
+  },
+  "homepage": "https://github.com/rachelf27/life2fullest#readme",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.348.0",
+    "aws-sdk": "^2.1394.0",
+    "axios": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
