@@ -1,7 +1,27 @@
+data "aws_ami" "ecom_app_aws_linux_image" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+  owners = ["amazon"]
+}
+
+data "terraform_remote_state" "subnets" {
+  backend = "local"
+  config = {
+    path = "../terraform/networking/terraform.tfstate"
+  }
+}
+
 variable "ami_id" {
   description = "The AMI Id"
   type        = string
-  default     = ""
+  default     = data.aws_ami.ecom_app_aws_linux_image.id
 }
 
 variable "number_of_instances" {
@@ -13,7 +33,7 @@ variable "number_of_instances" {
 variable "subnet_id" {
     description = "The subnet to use"
     type = string
-    default = "value"
+    default = data.terraform_remote_state.subnets.outputs.subnet_id_1
 }
 
 variable "instance_type" {
@@ -22,8 +42,8 @@ variable "instance_type" {
     default = "t2.micro"
 }
 
-variable "key_pair" {
-  description = "value"
-  type = string
-  default = "value"
+variable "key_pair_name" {
+  description = "The Key Pair name"
+  type        = string
+  default     = "ecom_app_key"
 }
