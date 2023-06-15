@@ -5,17 +5,21 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
           // Use DOCKER_USERNAME and DOCKER_PASSWORD to authenticate with DockerHub
-          script {
-            // First pull the latest frontend image
-            docker.image("rachelvf27/life2fullest-frontend").pull()
-            // Build the frontend docker image
-            frontend = docker.build("rachelvf27/life2fullest-frontend")
-            // Pull the latest backend image
-            docker.image("rachelvf27/life2fullest-backend").pull()
-            // Build the backend docker image
-            backend = docker.build("rachelvf27/life2fullest-backend")
-            // Run docker compose up using docker-compose.yml
-            sh 'docker compose up'
+          agent {
+            docker {
+                script {
+                    // First pull the latest frontend image
+                    docker.image("rachelvf27/life2fullest-frontend").pull()
+                    // Build the frontend docker image
+                    frontend = docker.build("rachelvf27/life2fullest-frontend")
+                    // Pull the latest backend image
+                    docker.image("rachelvf27/life2fullest-backend").pull()
+                    // Build the backend docker image
+                    backend = docker.build("rachelvf27/life2fullest-backend")
+                    // Run docker compose up using docker-compose.yml
+                    sh 'docker compose up'
+                }
+            }
           }
         }
       }
