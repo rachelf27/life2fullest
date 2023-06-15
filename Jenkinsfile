@@ -4,15 +4,16 @@ pipeline {
     stage('Build Images') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-      // Use DOCKER_USERNAME and DOCKER_PASSWORD to authenticate with DockerHub
-      // Build and push Docker images
-        // First build the docker images
-        // get frontend dockerfile
-        frontend = docker.build("rachelvf27/life2fullest-frontend")
-        // get backend dockerfile
-        backend = docker.build("rachelvf27/life2fullest-backend")
-        // run docker compose up using docker-compose.yml
-        sh 'docker compose up'
+          // Use DOCKER_USERNAME and DOCKER_PASSWORD to authenticate with DockerHub
+          // Build and push Docker images
+          // First build the docker images
+          // get frontend dockerfile
+          frontend = docker.build("rachelvf27/life2fullest-frontend")
+          // get backend dockerfile
+          backend = docker.build("rachelvf27/life2fullest-backend")
+          // run docker compose up using docker-compose.yml
+          sh 'docker compose up'
+        }
       }
     }
     
