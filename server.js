@@ -1,62 +1,36 @@
-// import dependencies
+// Import dependencies
 const express = require('express');
-const router = express.Router();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const {dirname} = require('path');
-const { scanProducts } = require('./db/table');
+const adminRoutes = require('./routes/admin');
+const publicRoutes = require('./routes/public')
+const productDb = require('../db/productDb');
+
+module.exports = router;
+
 const port = process.env.PORT || 8000;
 
-// initialize express app
+// Initialize express app
 const app = express();
 
-// configure middleware
+// Configure middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
+// Define routes
 
-// define routes
-app.get('/', (req, res) => {
+// Admin routes
+app.use('/admin', adminRoutes);
+
+// Public routes
+app.use('/', publicRoutes);
+
+// This is a test route
+app.get('/test', (req, res) => {
     res.json({message: 'Welcome to Life2Fullest E-Commerce Platform'});
 });
-
-app.get('/api/test', (req, res) => {
-    res.json({message: 'Test successful'});
-});
-
-app.get('/api/productListTest', async (req, res) => {
-    try {
-        // This is a dummy response to test if the endpoint works
-        const products = [
-          {id: 1, name: "Product 1", price: 100},
-          {id: 2, name: "Product 2", price: 200},
-        ];
-        res.json(products);
-      } catch(err) {
-        res.status(500).json({ message: 'An error occurred' });
-      }
-  });
- 
-  app.get('/api/products', async (req, res) => {
-    try {
-      const allProducts = await scanProducts();
-      res.json(allProducts);
-    } catch(err) {
-      res.status(500).json({ message: 'An error occurred' });
-    }
-  });
-
-  //updateProduct
-  /*
-  await updateProduct(
-    'product123', 
-    'SET price = :newPrice, description = :newDescription', 
-    {
-        ':newPrice': 29.99,
-        ':newDescription': 'This is an updated description'
-    }
-);*/
 
 // start the server
 app.listen(port, () => {

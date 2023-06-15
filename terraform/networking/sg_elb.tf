@@ -1,6 +1,6 @@
 # Create Security Group for ELB
 resource "aws_security_group" "ecom_app_sg_elb" {
-  name        = "E-Commerce Security Group for ELB"
+  name        = "e-commerce-sg-elb"
   description = "Module for ELB"
   vpc_id      = aws_vpc.ecom_app_vpc.id
 
@@ -34,5 +34,9 @@ resource "aws_security_group" "ecom_app_sg_elb" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "ecom_app_sg_elb"
   }
 }

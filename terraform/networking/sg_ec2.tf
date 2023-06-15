@@ -1,6 +1,6 @@
 # Create Security Group for EC2
 resource "aws_security_group" "ecom_app_sg_ec2" {
-  name        = "E-Commerce Security Group for EC2"
+  name        = "e-commerce-app-sg-ec2"
   description = "Module for EC2"
   vpc_id      = aws_vpc.ecom_app_vpc.id
 
@@ -13,7 +13,7 @@ resource "aws_security_group" "ecom_app_sg_ec2" {
   }
 
   # Set Inbound Rule HTTPS Access 'from anywhere'
-  ingress = {
+  ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -34,5 +34,9 @@ resource "aws_security_group" "ecom_app_sg_ec2" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  tags = {
+    Name = "ecom_app_sg_ec2"
   }
 }

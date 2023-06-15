@@ -1,3 +1,37 @@
+data "terraform_remote_state" "vpc" {
+  backend = "remote"
+
+  config = {
+    organization = "RachelMurphy"
+    workspaces = {
+      name = "ecom_app_workspace"
+    }
+  }
+}
+
+
+data "terraform_remote_state" "subnets" {
+  backend = "remote"
+
+  config = {
+    organization = "RachelMurphy"
+    workspaces = {
+      name = "ecom_app_workspace"
+    }
+  }
+}
+
+data "terraform_remote_state" "alb_dns_name" {
+ backend = "remote"
+
+  config = {
+    organization = "RachelMurphy"
+    workspaces = {
+      name = "ecom_app_workspace"
+    }
+  }
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~>19.15"
@@ -8,30 +42,6 @@ module "eks" {
   cluster_endpoint_public_access = true
 
   vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
-
-  data "terraform_remote_state" "vpc" {
-    backend = "local"
-
-    config = {
-      path = "../terraform/networking/terraform.tfstate"
-    }
-  }
-
-  data "terraform_remote_state" "subnets" {
-    backend = "local"
-
-    config = {
-      path = "../terraform/networking/terraform.tfstate"
-    }
-  }
-
-  data "terraform_remote_state" "alb_dns_name" {
-    backend = "local"
-
-    config = {
-      path = "../terraform/networking/terraform.tfstate"
-    }
-  }
 
   eks_managed_node_groups = {
     load_balancer_ip = data.terraform_remote_state.alb_dns_name.outputs.alb_dns_name

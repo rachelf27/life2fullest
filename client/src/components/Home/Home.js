@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ProductList from '../ProductList/ProductList'; // adjust the import path as necessary
+import GetProductList from '../ProductList/GetProductList'; // adjust the import path as necessary
 
 function Home() {
   const [message, setMessage] = useState('');
@@ -14,7 +14,7 @@ function Home() {
     <div>
       <h1>Welcome to our store!</h1>
       <p>{message}</p>
-      <ProductList />
+      <GetProductList />
     </div>
   );
 }

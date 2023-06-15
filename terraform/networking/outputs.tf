@@ -10,6 +10,10 @@ output "subnet_id_2" {
   value = aws_subnet.ecom_app_subnet_2.id
 }
 
-output "alb_dns_name" {
-  value = aws_lb.ecom_app_web_lb.dns_name
+output "sg_elb_id" {
+  value = aws_security_group.ecom_app_sg_elb.id
+}
+
+output "key_name" {
+  value = aws_key_pair.ecom_app_key_pair.key_name
 }

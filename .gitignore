@@ -21,3 +21,6 @@ npm-debug.log
 terraform.rc
 
 .dockerignore
+
+* any workspace files created
+*.code-workspace

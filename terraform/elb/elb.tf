@@ -1,10 +1,26 @@
-# Create Elastic Load Balancer
+data "terraform_remote_state" "ec2_outputs" {
+  backend = "local"
+
+  config = {
+    path = "../ec2/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "networking_outputs" {
+  backend = "local"
+
+  config = {
+    path = "../networking/terraform.tfstate"
+  }
+}
+
+# Create Application Load Balancer
 resource "aws_lb" "ecom_app_web_lb" {
-  name               = "E-Commerce App Web LB"
-  security_groups    = [aws_security_group.ecom_app_sg_elb.id]
+  name               = "e-commerce-app-web-lb"
+  security_groups    = [ data.terraform_remote_state.networking_outputs.outputs.sg_elb_id]
   subnets            = [
-    aws_subnet.ecom_app_subnet_1.id,
-    aws_subnet.ecom_app_subnet_2.id
+    data.terraform_remote_state.networking_outputs.outputs.subnet_id_1,
+    data.terraform_remote_state.networking_outputs.outputs.subnet_id_2
   ]
   enable_cross_zone_load_balancing = true
   idle_timeout                      = 60
@@ -16,10 +32,10 @@ resource "aws_lb" "ecom_app_web_lb" {
 
 # Create Target Group
 resource "aws_lb_target_group" "ecom_app_web_tg" {
-  name        = "E-Commerce App Web TG"
+  name        = "e-commerce-app-eb-tg"
   port        = 80
   protocol    = "HTTP"
-  vpc_id      = aws_vpc.ecom_app_vpc.id
+  vpc_id      = data.terraform_remote_state.networking_outputs.outputs.vpc_id
   target_type = "instance"
 
   health_check {

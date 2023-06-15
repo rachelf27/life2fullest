@@ -1,5 +1,5 @@
 module.exports = {
-    aws_table_name: 'tf_products_table',
+    aws_table_name: 'ecom-app-products-table',
     aws_local_config: {
         region: 'local',
         endpoint: 'http://localhost:8000'

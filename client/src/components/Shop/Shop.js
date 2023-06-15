@@ -1,11 +1,11 @@
 import React from 'react';
-import ProductList from '../ProductList/ProductList'; 
+import GetProductList from '../ProductList/GetProductList'; 
 
 function Shop() {
   return (
     <div>
       <h1>Take a look at our products</h1>
-      <ProductList />
+      <GetProductList />
     </div>
   );}
 export default Shop;

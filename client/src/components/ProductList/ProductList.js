@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function ProductList() {
+function GetProductList() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -13,11 +13,13 @@ function ProductList() {
   }, []); // the empty array means this effect runs once when the component mounts
   return (
     <div>
-      {products.map(product => (
+      {products.map((product) => (
         <div key={product.id}>
-          {product.name} - ${product.price}
+          <div>{product.name}</div>
+          <div>${product.price}</div>
+          <img src={product.url} alt={product.name} />
         </div>
       ))}
     </div>
   );}
-export default ProductList;
+export default GetProductList;

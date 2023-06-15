@@ -1,0 +1,20 @@
+- name: Provision EC2 resources
+  hosts: localhost
+  tasks:
+    - name: Run terraform init for EC2
+      command: terraform init
+      args:
+        chdir: "{{ playbook_dir }}/../terraform/ec2"
+
+    - name: Run terraform plan for EC2
+      command: terraform plan
+      args:
+        chdir: "{{ playbook_dir }}/../terraform/ec2"
+
+    - name: Run terraform apply for EC2
+      command: terraform apply -auto-approve 
+      args:
+        chdir: "{{ playbook_dir }}/../terraform/ec2"
+
+    - name: Populate EC2 data
+      command: node ../data/populateData.js
