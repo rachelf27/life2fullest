@@ -1,12 +1,15 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'docker:latest'
+      // You can specify the desired Docker image here
+    }
+  }
   stages {
     stage('Build Images') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
           // Use DOCKER_USERNAME and DOCKER_PASSWORD to authenticate with DockerHub
-          agent {
-            docker {
                 script {
                     // First pull the latest frontend image
                     docker.image("rachelvf27/life2fullest-frontend").pull()
@@ -20,9 +23,7 @@ pipeline {
                     sh 'docker compose up'
                 }
             }
-          }
         }
-      }
     }
     
     stage('Provision Resources') {
