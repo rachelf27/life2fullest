@@ -23,6 +23,7 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |
+            DOCKER_PASSWORD_ENCODED=$(node -e "console.log(encodeURIComponent('$DOCKER_PASSWORD'))")
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD https://index.docker.io/v1/
             
 
