@@ -5,6 +5,7 @@ jobs:
       - image: circleci/node:14
 
     working_directory: ~/repo
+    context: docker
 
     steps:
       - checkout
