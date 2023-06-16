@@ -1,0 +1,57 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/node:14
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Install dependencies
+      - run:
+          name: Install dependencies
+          command: npm install
+
+      # Run tests
+      - run:
+          name: Run tests
+          command: npm test
+
+      # Build and push Docker image
+      - run:
+          name: Build and push Docker image
+          command: |
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker pull -t rachelvf27/life2fullest-frontend .
+            docker build -t rachelvf27/life2fullest-frontend .
+            docker pull -t rachelvf27/life2fullest-backend .
+            docker build -t rachelvf27/life2fullest-backend .
+
+      # Run Ansible playbooks (Provision Resources)
+      - run:
+          name: Run Ansible playbooks
+          command: |
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
+            ansible-playbook ansible/playbooks/networking.yml
+            ansible-playbook ansible/playbooks/s3.yml
+            ansible-playbook ansible/playbooks/dynamodb.yml
+            ansible-playbook ansible/playbooks/ec2.yml
+            ansible-playbook ansible/playbooks/elb.yml
+            ansible-playbook ansible/playbooks/auto_scaling.yml
+
+      # Run EKS Cluster (Deploy)
+      - run:
+          name: Run Ansible playbooks
+          command: |
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
+            ansible-playbook ansible/playbooks/eks_cluster.yml
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
