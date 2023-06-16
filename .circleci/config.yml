@@ -18,18 +18,10 @@ jobs:
           name: Check DOCKER_PASSWORD
           command: echo -e $DOCKER_PASSWORD
 
-      # Set environment variables
-      - run:
-          name: Set environment variables
-          command: |
-            echo "DOCKER_USERNAME=$DOCKER_USERNAME" >> $BASH_ENV
-            echo "DOCKER_PASSWORD=$DOCKER_PASSWORD" >> $BASH_ENV
-
       # Build and push Docker image
       - run:
           name: Build and push Docker image
           command: |
-            source $BASH_ENV
             docker login --username $DOCKER_USERNAME --password $DOCKER_PAT https://index.docker.io/v1/
 
       # Run Ansible playbooks (Provision Resources)
