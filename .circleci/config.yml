@@ -14,6 +14,11 @@ jobs:
           name: Install dependencies
           command: npm install
 
+      - run:
+          name: Check DOCKER_PASSWORD
+          command: echo $DOCKER_PASSWORD
+
+
       # Build and push Docker image
       - run:
           name: Build and push Docker image
