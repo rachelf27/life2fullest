@@ -16,18 +16,15 @@ jobs:
 
       - run:
           name: Check DOCKER_PASSWORD
-          command: echo $DOCKER_PASSWORD
+          command: echo -e $DOCKER_PASSWORD
 
 
       # Build and push Docker image
       - run:
           name: Build and push Docker image
           command: |
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
-            docker pull -t rachelvf27/life2fullest-frontend .
-            docker build -t rachelvf27/life2fullest-frontend .
-            docker pull -t rachelvf27/life2fullest-backend .
-            docker build -t rachelvf27/life2fullest-backend .
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD https://index.docker.io/v1/
+            
 
       # Run Ansible playbooks (Provision Resources)
       - run:
