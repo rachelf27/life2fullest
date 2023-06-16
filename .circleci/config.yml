@@ -18,7 +18,7 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
             docker pull -t rachelvf27/life2fullest-frontend .
             docker build -t rachelvf27/life2fullest-frontend .
             docker pull -t rachelvf27/life2fullest-backend .
