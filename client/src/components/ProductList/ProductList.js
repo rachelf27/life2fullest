@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function GetProductList() {
+function ProductList() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -22,4 +22,4 @@ function GetProductList() {
       ))}
     </div>
   );}
-export default GetProductList;
+export default ProductList;

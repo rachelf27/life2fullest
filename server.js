@@ -5,9 +5,6 @@ const bodyParser = require('body-parser');
 const {dirname} = require('path');
 const adminRoutes = require('./routes/admin');
 const publicRoutes = require('./routes/public')
-const productDb = require('../db/productDb');
-
-module.exports = router;
 
 const port = process.env.PORT || 8000;
 
@@ -25,7 +22,9 @@ app.use(cors());
 app.use('/admin', adminRoutes);
 
 // Public routes
-app.use('/', publicRoutes);
+app.use('/home', publicRoutes);
+app.use('/api/products', publicRoutes);
+
 
 // This is a test route
 app.get('/test', (req, res) => {
