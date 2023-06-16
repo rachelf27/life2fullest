@@ -30,7 +30,7 @@ jobs:
           name: Build and push Docker image
           command: |
             source $BASH_ENV
-            docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD https://index.docker.io/v1/
+            docker login --username $DOCKER_USERNAME --password $DOCKER_PAT https://index.docker.io/v1/
 
       # Run Ansible playbooks (Provision Resources)
       - run:
