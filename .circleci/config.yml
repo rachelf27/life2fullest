@@ -33,9 +33,9 @@ jobs:
           name: Build and push Docker image
           command: |
             echo $DOCKER_PAT | docker login -u $DOCKER_USERNAME --password-stdin https://index.docker.io/v1/
-            docker pull -t rachelvf27/life2fullest-frontend .
+            docker pull rachelvf27/life2fullest-frontend .
             docker build -t rachelvf27/life2fullest-frontend .
-            docker pull -t rachelvf27/life2fullest-backend .
+            docker pull rachelvf27/life2fullest-backend .
             docker build -t rachelvf27/life2fullest-backend .
 
       # Run Ansible playbooks (Provision Resources)
