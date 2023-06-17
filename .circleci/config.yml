@@ -13,9 +13,9 @@ jobs:
       - run:
           name: Install Ansible
           command: |
-            python3 -m pip -V
             sudo apt-get update
             sudo apt-get install -y python3-pip
+            python3 -m pip -V
             python3 -m pip install --user ansible
             ansible --version
 
