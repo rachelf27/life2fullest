@@ -2,12 +2,15 @@
   hosts: localhost
   tasks:
     - name: Print the working directory
-      command: pwd
+      command:
+        chdir: /ansible/playbooks
+        cmd: ls
+        register: result
 
     - name: Run terraform init for Networking resources
       command: terraform init
       args:
-        chdir: "{{ playbook_dir }} ../terraform/networking"
+        chdir: "{{ playbook_dir }}../../terraform/networking"
 
     - name: Run terraform plan for Networking resources
       command: terraform plan
@@ -18,3 +21,6 @@
       command: terraform apply -auto-approve
       args:
         chdir: "{{ playbook_dir }} ../terraform/networking"
+
+    - debug:
+        var: result.stdout
