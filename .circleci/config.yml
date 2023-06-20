@@ -32,13 +32,13 @@ jobs:
           name: Check DOCKER_PASSWORD
           command: echo -e $DOCKER_PASSWORD
 
-      # Build and push Docker image
+      # Pull and Build Docker images
       - run:
           name: Build and push Docker image
           command: |
             echo $DOCKER_PAT | docker login -u $DOCKER_USERNAME --password-stdin https://index.docker.io/v1/
-            docker pull rachelvf27/life2fullest-frontend:2
-            docker build -t rachelvf27/life2fullest-frontend:2 .
+            docker pull rachelvf27/life2fullest-frontend:2 ./client -f ./client/frontend.dockerfile
+            docker build -t rachelvf27/life2fullest-frontend:2 . -f backend.dockerfile
             docker pull rachelvf27/life2fullest-backend:2
             docker build -t rachelvf27/life2fullest-backend:2 .
 
