@@ -24,6 +24,10 @@ jobs:
           name: Install dependencies
           command: npm install
 
+      # Set up and start Docker service
+      - setup_remote_docker:
+          version: 20.10.18
+
       - run:
           name: Check DOCKER_PASSWORD
           command: echo -e $DOCKER_PASSWORD
