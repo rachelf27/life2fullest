@@ -9,31 +9,14 @@
     - debug:
         var: pwd_output.stdout
 
-    - name: List the contents of the playbook directory
-      command: ls -l "{{ playbook_dir }}"
-      register: playbook_output
-
-    - debug:
-        var: playbook_output.stdout
-
-    - name: List the contents of the Terraform directory
-      command: ls -l "{{ playbook_dir }}/../../terraform/networking"
-      register: terraform_output
-
-    - debug:
-        var: terraform_output.stdout
-
     - name: Run terraform init for Networking resources
-      command: terraform init
-      args:
-        chdir: "{{ playbook_dir }}/../../terraform/networking"
+      command: >
+        bash -c "cd {{ playbook_dir }}/../../terraform/networking && pwd && terraform init"
 
     - name: Run terraform plan for Networking resources
-      command: terraform plan
-      args:
-        chdir: "{{ playbook_dir }}/../../terraform/networking"
+      command: >
+        bash -c "cd {{ playbook_dir }}/../../terraform/networking && pwd && terraform plan"
 
     - name: Run terraform apply to create networking infrastructure
-      command: terraform apply -auto-approve
-      args:
-        chdir: "{{ playbook_dir }}/../../terraform/networking"
+      command: >
+        bash -c "cd {{ playbook_dir }}/../../terraform/networking && pwd && terraform apply -auto-approve"
