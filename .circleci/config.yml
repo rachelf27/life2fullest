@@ -64,6 +64,12 @@ jobs:
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
             cd ansible/playbooks
             pwd
+            cp ../../terraform/provider.tf ../../terraform/networking
+            cp ../../terraform/provider.tf ../../terraform/s3
+            cp ../../terraform/provider.tf ../../terraform/dynamodb
+            cp ../../terraform/provider.tf ../../terraform/ec2
+            cp ../../terraform/provider.tf ../../terraform/elb
+            cp ../../terraform/provider.tf ../../terraform/auto_scaling
             ansible-playbook networking.yml
             ansible-playbook s3.yml
             ansible-playbook dynamodb.yml
