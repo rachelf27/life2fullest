@@ -42,6 +42,13 @@ jobs:
             docker pull rachelvf27/life2fullest-backend:2
             docker build -t rachelvf27/life2fullest-backend:2 -f backend.dockerfile .
 
+      - run:
+          name: Debug workspace directory structure
+          command: |
+            ls -R
+            ls ansible/playbooks
+            ls ../../terraform/networking
+
       # Run Ansible playbooks (Provision Resources)
       - run:
           name: Run Ansible playbooks
@@ -49,6 +56,7 @@ jobs:
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
             cd ansible
+            pwd
             ansible-playbook playbooks/networking.yml
             ansible-playbook playbooks/s3.yml
             ansible-playbook playbooks/dynamodb.yml
