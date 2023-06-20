@@ -4,34 +4,34 @@
     - name: Run terraform destroy for DynamoDb
       command: terraform destroy -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/dynamoDb"
+        chdir: "{{ playbook_dir }}/../../terraform/dynamoDb"
 
     - name: Run terraform destroy for S3
       command: terraform destroy -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/s3"
+        chdir: "{{ playbook_dir }}/../../terraform/s3"
     
     - name: Run terraform destroy for Auto Scaling
       command: terraform destroy -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/auto_scaling"
+        chdir: "{{ playbook_dir }}/../../terraform/auto_scaling"
 
     - name: Run terraform destroy for ELB
       command: terraform destroy -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/elb"
+        chdir: "{{ playbook_dir }}/../../terraform/elb"
 
     - name: Run terraform destroy for EC2
       command: terraform destroy -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/ec2"
+        chdir: "{{ playbook_dir }}/../../terraform/ec2"
 
     - name: Run terraform destroy for Networking
       command: terraform destroy -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/networking"
+        chdir: "{{ playbook_dir }}/../../terraform/networking"
 
     - name: Run terraform destroy for EKS Cluster
       command: terraform destroy -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/eks_cluster"
+        chdir: "{{ playbook_dir }}/../../terraform/eks_cluster"

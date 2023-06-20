@@ -4,14 +4,14 @@
     - name: Run terraform init for EKS Cluster
       command: terraform init
       args:
-        chdir: "{{ playbook_dir }}/../terraform"
+        chdir: "{{ playbook_dir }}/../../terraform"
 
     - name: Run terraform plan for EKS Cluster
       command: terraform plan
       args:
-        chdir: "{{ playbook_dir }}/../terraform"
+        chdir: "{{ playbook_dir }}/../../terraform"
 
     - name: Run terraform apply for EKS Cluster
       command: terraform apply -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform"
+        chdir: "{{ playbook_dir }}/../../terraform"

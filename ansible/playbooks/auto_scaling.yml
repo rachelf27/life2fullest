@@ -4,14 +4,14 @@
     - name: Run terraform init for Auto Scaling
       command: terraform init
       args:
-        chdir: "{{ playbook_dir }}/../terraform/auto_scaling"
+        chdir: "{{ playbook_dir }}/../../terraform/auto_scaling"
 
     - name: Run terraform plan for Auto Scaling
       command: terraform plan
       args:
-        chdir: "{{ playbook_dir }}/../terraform/auto_scaling"
+        chdir: "{{ playbook_dir }}/../../terraform/auto_scaling"
 
     - name: Run terraform apply for Auto Scaling
       command: terraform apply -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/auto_scaling"
+        chdir: "{{ playbook_dir }}/../../terraform/auto_scaling"

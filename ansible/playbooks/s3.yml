@@ -4,14 +4,14 @@
     - name: Run terraform init for S3
       command: terraform init
       args:
-        chdir: "{{ playbook_dir }}/../terraform/s3"
+        chdir: "{{ playbook_dir }}/../../terraform/s3"
 
     - name: Run terraform plan for S3
       command: terraform plan
       args:
-        chdir: "{{ playbook_dir }}/../terraform/s3"
+        chdir: "{{ playbook_dir }}/../../terraform/s3"
 
     - name: Run terraform apply for S3
       command: terraform apply -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/s3"
+        chdir: "{{ playbook_dir }}/../../terraform/s3"

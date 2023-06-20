@@ -4,14 +4,14 @@
     - name: Run terraform init for elb
       command: terraform init
       args:
-        chdir: "{{ playbook_dir }}/../terraform/elb"
+        chdir: "{{ playbook_dir }}/../../terraform/elb"
 
     - name: Run terraform plan for elb
       command: terraform plan
       args:
-        chdir: "{{ playbook_dir }}/../terraform/elb"
+        chdir: "{{ playbook_dir }}/../../terraform/elb"
 
     - name: Run terraform apply for elb
       command: terraform apply -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/elb"
+        chdir: "{{ playbook_dir }}/../../terraform/elb"

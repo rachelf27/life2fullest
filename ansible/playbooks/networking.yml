@@ -2,16 +2,16 @@
   hosts: localhost
   tasks:
     - name: Run terraform init for Networking resources
-      command: terraform init 
+      command: terraform init
       args:
-        chdir: "{{ playbook_dir }}/../terraform/networking"
+        chdir: "{{ playbook_dir }}/../../terraform/networking"
 
     - name: Run terraform plan for Networking resources
-      command: terraform plan 
+      command: terraform plan
       args:
-        chdir: "{{ playbook_dir }}/../terraform/networking"
+        chdir: "{{ playbook_dir }}/../../terraform/networking"
 
-    - name: Run terraform apply to create networking infrastructure 
-      command: terraform apply -auto-approve 
+    - name: Run terraform apply to create networking infrastructure
+      command: terraform apply -auto-approve
       args:
-        chdir: "{{ playbook_dir }}/../terraform/networking"
+        chdir: "{{ playbook_dir }}/../../terraform/networking"

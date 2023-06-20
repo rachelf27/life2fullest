@@ -4,14 +4,14 @@
     - name: Run terraform init for dynamoDb
       command: terraform init
       args:
-        chdir: "{{ playbook_dir }}/../terraform/dynamoDb"
+        chdir: "{{ playbook_dir }}/../../terraform/dynamoDb"
 
     - name: Run terraform plan for dynamoDb
       command: terraform plan
       args:
-        chdir: "{{ playbook_dir }}/../terraform/dynamoDb"
+        chdir: "{{ playbook_dir }}/../../terraform/dynamoDb"
 
     - name: Run terraform apply for dynamoDb
       command: terraform apply -auto-approve 
       args:
-        chdir: "{{ playbook_dir }}/../terraform/dynamoDb"
+        chdir: "{{ playbook_dir }}/../../terraform/dynamoDb"
