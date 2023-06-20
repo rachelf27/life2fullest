@@ -9,9 +9,10 @@
     - debug:
         var: pwd_output.stdout
 
-    - name: Copy variables.tf to networking directory
-      command: cp -n {{ playbook_dir }}/../../terraform/networking/variables.tf {{ playbook_dir }}/../../terraform/networking/
-      
+    - name: Include variables from variables.tf
+      include_vars:
+        file: "{{ playbook_dir }}/../../terraform/networking/variables.tf"
+
     - name: Run terraform init for Networking resources
       command: >
         bash -c "cd {{ playbook_dir }}/../../terraform/networking && pwd && terraform init"
