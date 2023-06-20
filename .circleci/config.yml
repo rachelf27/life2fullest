@@ -56,12 +56,18 @@ jobs:
             ls -R
             ls ansible/playbooks
 
+      - run:
+          name: Check AWS Keys
+          command: |
+            echo -e $AWS_ACCESS_KEY
+            echo -e $AWS_SECRET_KEY
+
       # Run Ansible playbooks (Provision Resources)
       - run:
           name: Run Ansible playbooks
           command: |
-            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
-            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd ansible/playbooks
             pwd
             cp ../../terraform/{provider.tf,variables.tf} ../../terraform/networking/
@@ -81,8 +87,8 @@ jobs:
       - run:
           name: Run Ansible playbooks
           command: |
-            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
-            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd ansible
             ansible-playbook playbooks/eks_cluster.yml
 
