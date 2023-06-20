@@ -47,7 +47,6 @@ jobs:
           command: |
             ls -R
             ls ansible/playbooks
-            ls ../../terraform/networking
 
       # Run Ansible playbooks (Provision Resources)
       - run:
