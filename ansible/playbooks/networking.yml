@@ -2,11 +2,27 @@
   hosts: localhost
   become: true
   tasks:
-    - name: Print the working directory
-      command: ls -l
-      register: test
-    - debug: msg={{ test.stdout }}
-          
+    - name: Print the current working directory
+      command: pwd
+      register: pwd_output
+
+    - debug:
+        var: pwd_output.stdout
+
+    - name: List the contents of the playbook directory
+      command: ls -l "{{ playbook_dir }}"
+      register: playbook_output
+
+    - debug:
+        var: playbook_output.stdout
+
+    - name: List the contents of the Terraform directory
+      command: ls -l "{{ playbook_dir }}/../../terraform/networking"
+      register: terraform_output
+
+    - debug:
+        var: terraform_output.stdout
+
     - name: Run terraform init for Networking resources
       command: terraform init
       args:
