@@ -1,25 +1,23 @@
 - name: Provision AWS Networking resources
   hosts: localhost
+  become: true
   tasks:
     - name: Print the working directory
-      command:
-        cmd: ls
-
-    - name: Set Terraform directory path
-      set_fact:
-        terraform_dir: "{{ lookup('env', 'HOME') }}/repo/terraform/networking"
-
+      command: ls -l
+      register: test
+    - debug: msg={{ test.stdout }}
+          
     - name: Run terraform init for Networking resources
       command: terraform init
       args:
-        chdir: "{{ terraform_dir }}"
+        chdir: "{{ playbook_dir }}/../../terraform/networking"
 
     - name: Run terraform plan for Networking resources
       command: terraform plan
       args:
-        chdir: "{{ terraform_dir }}"
+        chdir: "{{ playbook_dir }}/../../terraform/networking"
 
     - name: Run terraform apply to create networking infrastructure
       command: terraform apply -auto-approve
       args:
-        chdir: "{{ terraform_dir }}"
+        chdir: "{{ playbook_dir }}/../../terraform/networking"
