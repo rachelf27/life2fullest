@@ -38,9 +38,9 @@ jobs:
           command: |
             echo $DOCKER_PAT | docker login -u $DOCKER_USERNAME --password-stdin https://index.docker.io/v1/
             docker pull rachelvf27/life2fullest-frontend:2
-            docker build -t rachelvf27/life2fullest-frontend:2
-            docker pull rachelvf27/life2fullest-backend:2            
-            docker build -t rachelvf27/life2fullest-backend:2
+            docker build -t rachelvf27/life2fullest-frontend:2 .
+            docker pull rachelvf27/life2fullest-backend:2
+            docker build -t rachelvf27/life2fullest-backend:2 .
 
       # Run Ansible playbooks (Provision Resources)
       - run:
