@@ -49,12 +49,12 @@ jobs:
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
             cd ansible
-            ansible-playbook ansible/playbooks/networking.yml
-            ansible-playbook ansible/playbooks/s3.yml
-            ansible-playbook ansible/playbooks/dynamodb.yml
-            ansible-playbook ansible/playbooks/ec2.yml
-            ansible-playbook ansible/playbooks/elb.yml
-            ansible-playbook ansible/playbooks/auto_scaling.yml
+            ansible-playbook playbooks/networking.yml
+            ansible-playbook playbooks/s3.yml
+            ansible-playbook playbooks/dynamodb.yml
+            ansible-playbook playbooks/ec2.yml
+            ansible-playbook playbooks/elb.yml
+            ansible-playbook playbooks/auto_scaling.yml
 
       # Run EKS Cluster (Deploy)
       - run:
@@ -63,7 +63,7 @@ jobs:
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
             cd ansible
-            ansible-playbook ansible/playbooks/eks_cluster.yml
+            ansible-playbook playbooks/eks_cluster.yml
 
 workflows:
   version: 2
