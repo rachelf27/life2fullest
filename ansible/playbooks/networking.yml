@@ -5,7 +5,6 @@
       command:
         chdir: /ansible/playbooks
         cmd: ls
-        register: result
 
     - name: Run terraform init for Networking resources
       command: terraform init
