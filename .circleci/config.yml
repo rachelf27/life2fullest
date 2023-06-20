@@ -9,6 +9,14 @@ jobs:
     steps:
       - checkout
 
+      # Install Terraform
+      - run:
+          name: Install Terraform
+          command: |
+            curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp.gpg
+            echo "deb [signed-by=/usr/share/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
+            sudo apt-get update && sudo apt-get install -y terraform
+      
       # Install Ansible
       - run:
           name: Install Ansible
