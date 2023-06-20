@@ -3,7 +3,6 @@
   tasks:
     - name: Print the working directory
       command:
-        chdir: /ansible/playbooks
         cmd: ls
 
     - name: Run terraform init for Networking resources
