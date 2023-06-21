@@ -17,25 +17,6 @@ jobs:
             echo "deb [signed-by=/usr/share/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
             sudo apt-get update && sudo apt-get install -y terraform
       
-      # Install hcl2json
-      - run:
-          name: Install hcl2json
-          command: |
-            wget -q https://releases.hashicorp.com/hcl2json/0.3.3/hcl2json_0.3.3_linux_amd64.zip
-            unzip hcl2json_0.3.3_linux_amd64.zip
-            sudo mv hcl2json /usr/local/bin/hcl2json
-            rm hcl2json_0.3.3_linux_amd64.zip
-
-      # Install Ansible
-      - run:
-          name: Install Ansible
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y python3-pip
-            python3 -m pip -V
-            python3 -m pip install --user ansible
-            ansible --version
-
       # Install dependencies
       - run:
           name: Install dependencies
@@ -62,8 +43,7 @@ jobs:
       - run:
           name: Debug workspace directory structure
           command: |
-            ls -R
-            ls ansible/playbooks
+            ls terraform
 
       - run:
           name: Check AWS Keys
@@ -73,24 +53,15 @@ jobs:
 
       # Run Ansible playbooks (Provision Resources)
       - run:
-          name: Run Ansible playbooks
+          name: Run Terraform commands
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
-            cd ansible/playbooks
+            cd ../../terraform/networking/
             pwd
-            cp ../../terraform/{provider.tf,variables.tf} ../../terraform/networking/
-            cp ../../terraform/{provider.tf,variables.tf} ../../terraform/s3/
-            cp ../../terraform/{provider.tf,variables.tf} ../../terraform/dynamodb/
-            cp ../../terraform/{provider.tf,variables.tf} ../../terraform/ec2/
-            cp ../../terraform/{provider.tf,variables.tf} ../../terraform/elb/
-            cp ../../terraform/{provider.tf,variables.tf} ../../terraform/auto_scaling/
-            ansible-playbook networking.yml
-            ansible-playbook s3.yml
-            ansible-playbook dynamodb.yml
-            ansible-playbook ec2.yml
-            ansible-playbook elb.yml
-            ansible-playbook auto_scaling.yml
+            echo terraform init
+            echo terraform plan 
+            echo terraform apply -auto-approve
 
       # Run EKS Cluster (Deploy)
       - run:
@@ -98,8 +69,6 @@ jobs:
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
-            cd ansible
-            ansible-playbook playbooks/eks_cluster.yml
 
 workflows:
   version: 2
