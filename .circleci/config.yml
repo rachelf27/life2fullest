@@ -57,7 +57,7 @@ jobs:
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
-            cp terraform/provider.tf terraform/networking/
+            cp terraform/{provider.tf,variables.tf} terraform/networking/
             cd terraform/networking/
             pwd
             terraform init
