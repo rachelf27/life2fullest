@@ -17,6 +17,15 @@ jobs:
             echo "deb [signed-by=/usr/share/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
             sudo apt-get update && sudo apt-get install -y terraform
       
+      # Install hcl2json
+      - run:
+          name: Install hcl2json
+          command: |
+            curl -fsSL -o hcl2json.zip https://github.com/tmccombs/hcl2json/releases/latest/download/hcl2json_linux_amd64.zip
+            unzip hcl2json.zip
+            sudo mv hcl2json /usr/local/bin/hcl2json
+            rm hcl2json.zip
+
       # Install Ansible
       - run:
           name: Install Ansible
