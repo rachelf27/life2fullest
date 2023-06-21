@@ -57,7 +57,7 @@ jobs:
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
-            cd ../../terraform/networking/
+            cd terraform/networking/
             pwd
             echo terraform init
             echo terraform plan 
