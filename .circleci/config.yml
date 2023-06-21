@@ -51,13 +51,23 @@ jobs:
             echo -e $AWS_ACCESS_KEY
             echo -e $AWS_SECRET_KEY
 
+      # Initialize Terraform Provider
+      - run:
+          name: Run Terraform init the Terraform root directory to initialize provider
+          command: |
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
+            cp terraform/{provider.tf,variables.tf} terraform/networking/
+            cd terraform
+            pwd
+            terraform init
+
       # Provision Networking Resources
       - run:
           name: Run Terraform commands
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
-            cp terraform/{provider.tf,variables.tf} terraform/networking/
             cd terraform/networking/
             pwd
             terraform init
