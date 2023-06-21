@@ -21,10 +21,10 @@ jobs:
       - run:
           name: Install hcl2json
           command: |
-            curl -fsSL -o hcl2json.zip https://github.com/tmccombs/hcl2json/releases/latest/download/hcl2json_linux_amd64.zip
-            unzip hcl2json.zip
+            wget -q https://releases.hashicorp.com/hcl2json/0.3.3/hcl2json_0.3.3_linux_amd64.zip
+            unzip hcl2json_0.3.3_linux_amd64.zip
             sudo mv hcl2json /usr/local/bin/hcl2json
-            rm hcl2json.zip
+            rm hcl2json_0.3.3_linux_amd64.zip
 
       # Install Ansible
       - run:
