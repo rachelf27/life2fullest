@@ -51,7 +51,7 @@ jobs:
             echo -e $AWS_ACCESS_KEY
             echo -e $AWS_SECRET_KEY
 
-      # Run Ansible playbooks (Provision Resources)
+      # Provision Networking Resources
       - run:
           name: Run Terraform commands
           command: |
@@ -59,9 +59,11 @@ jobs:
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd terraform/networking/
             pwd
-            echo terraform init
-            echo terraform plan 
-            echo terraform apply -auto-approve
+            terraform init
+            echo "Terraform plan output:"
+            terraform plan
+            echo "Terraform apply output:"
+            terraform apply -auto-approve
 
       # Run EKS Cluster (Deploy)
       - run:
