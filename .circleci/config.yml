@@ -74,7 +74,7 @@ jobs:
             echo "Terraform plan output:"
             terraform plan
             echo "Terraform apply output:"
-            terraform apply -auto-approve
+            terraform apply -auto-approve || export TF_APPLY_FAILED=true
             sleep 60
 
       # Run EKS Cluster (Deploy)
@@ -95,8 +95,28 @@ jobs:
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
 
+      # Add a separate job to handle cleanup even if the provisioning fails
+    cleanup:
+      docker:
+        - image: cimg/node:20.3.0
+
+      steps:
+        - run:
+            name: Cleanup Resources
+            command: |
+              export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+              export AWS_SECRET_KEY=$AWS_SECRET_KEY
+              cd terraform/networking/
+              pwd
+              echo "Terraform destroy output:"
+              terraform destroy -auto-approve
+
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build
+      - cleanup:
+          requires:
+            - build
+          when: on_fail
