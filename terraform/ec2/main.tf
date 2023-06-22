@@ -1,3 +1,21 @@
+variable "number_of_instances" {
+    description = "Total number of instances"
+    type = string
+    default = "1"
+}
+
+variable "instance_type" {
+    description = "Type of instance"
+    type = string
+    default = "t2.micro"
+}
+
+variable "key_pair_name" {
+  description = "The Key Pair name"
+  type        = string
+  default     = "ecom_app_key"
+}
+
 # Create EC2 instance
 resource "aws_instance" "ec2_instance" {
   ami        = data.aws_ami.ecom_app_aws_linux_image.id
