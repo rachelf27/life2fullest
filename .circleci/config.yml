@@ -32,18 +32,13 @@ jobs:
 
       # Pull and Build Docker images
       - run:
-          name: Build and push Docker image
+          name: Pull and Build Docker image
           command: |
             echo $DOCKER_PAT | docker login -u $DOCKER_USERNAME --password-stdin https://index.docker.io/v1/
             docker pull rachelvf27/life2fullest-frontend:2
             docker build -t rachelvf27/life2fullest-frontend:2 -f client/frontend.dockerfile .
             docker pull rachelvf27/life2fullest-backend:2
             docker build -t rachelvf27/life2fullest-backend:2 -f backend.dockerfile .
-
-      - run:
-          name: Debug workspace directory structure
-          command: |
-            ls terraform
 
       - run:
           name: Check AWS Keys
@@ -53,7 +48,7 @@ jobs:
 
       # Initialize Terraform Provider
       - run:
-          name: Run Terraform init to initialize provider
+          name: Run Terraform init to Initialize Provider
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
@@ -77,12 +72,99 @@ jobs:
             terraform apply -auto-approve
             sleep 60
 
+      # Provision S3 Resources
+      - run:
+          name: Provision S3 Resources
+          command: |
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
+            cp terraform/{provider.tf,variables.tf} terraform/s3/
+            cd terraform/s3/
+            pwd
+            terraform init
+            echo "Terraform plan output:"
+            terraform plan
+            echo "Terraform apply output:"
+            terraform apply -auto-approve
+            sleep 60
+      
+      # Provision DynamoDB Resources
+      - run:
+          name: Provision DynamoDB Resources
+          command: |
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
+            cp terraform/{provider.tf,variables.tf} terraform/dynamodb/
+            cd terraform/dynamodb/
+            pwd
+            terraform init
+            echo "Terraform plan output:"
+            terraform plan
+            echo "Terraform apply output:"
+            terraform apply -auto-approve
+            sleep 60
+
+      # Provision EC2 Resources
+      - run:
+          name: Provision EC2 Resources
+          command: |
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
+            cp terraform/{provider.tf,variables.tf} terraform/ec2/
+            cd terraform/ec2/
+            pwd
+            terraform init
+            echo "Terraform plan output:"
+            terraform plan
+            echo "Terraform apply output:"
+            terraform apply -auto-approve
+            sleep 60
+
+      # Provision ELB Resources
+      - run:
+          name: Provision ELB Resources
+          command: |
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
+            cp terraform/{provider.tf,variables.tf} terraform/elb/
+            cd terraform/elb/
+            pwd
+            terraform init
+            echo "Terraform plan output:"
+            terraform plan
+            echo "Terraform apply output:"
+            terraform apply -auto-approve
+            sleep 60
+
+      # Provision Auto Scaling Resources
+      - run:
+          name: Provision Auto Scaling Resources
+          command: |
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
+            cp terraform/{provider.tf,variables.tf} terraform/auto_scaling/
+            cd terraform/auto_scaling/
+            pwd
+            terraform init
+            echo "Terraform plan output:"
+            terraform plan
+            echo "Terraform apply output:"
+            terraform apply -auto-approve
+            sleep 60
+
       # Run EKS Cluster (Deploy)
       - run:
           name: Deploy EKS Cluster
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
+            pwd
+            terraform init
+            echo "Terraform plan output:"
+            terraform plan
+            echo "Terraform apply output:"
+            terraform apply -auto-approve
+            sleep 60
 
       # Destroy Resources
       - run:
@@ -94,6 +176,35 @@ jobs:
             pwd
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
+            cd ..
+            cd terraform/s3/
+            pwd
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve
+            cd ..
+            cd terraform/dynamodb/
+            pwd
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve
+            cd ..
+            cd terraform/ec2/
+            pwd
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve
+            cd ..
+            cd terraform/elb/
+            pwd
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve
+            cd ..
+            cd terraform/auto_scaling/
+            pwd
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve
+            cd ..
+            pwd
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve
       
       # Separate clean up task if a previous step fails and does not continue
       - run:
@@ -102,6 +213,35 @@ jobs:
               export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
               export AWS_SECRET_KEY=$AWS_SECRET_KEY
               cd terraform/networking/
+              pwd
+              echo "Terraform destroy output:"
+              terraform destroy -auto-approve
+              cd ..
+              cd terraform/s3/
+              pwd
+              echo "Terraform destroy output:"
+              terraform destroy -auto-approve
+              cd ..
+              cd terraform/dynamodb/
+              pwd
+              echo "Terraform destroy output:"
+              terraform destroy -auto-approve
+              cd ..
+              cd terraform/ec2/
+              pwd
+              echo "Terraform destroy output:"
+              terraform destroy -auto-approve
+              cd ..
+              cd terraform/elb/
+              pwd
+              echo "Terraform destroy output:"
+              terraform destroy -auto-approve
+              cd ..
+              cd terraform/auto_scaling/
+              pwd
+              echo "Terraform destroy output:"
+              terraform destroy -auto-approve
+              cd ..
               pwd
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
