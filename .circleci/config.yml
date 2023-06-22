@@ -53,7 +53,7 @@ jobs:
 
       # Initialize Terraform Provider
       - run:
-          name: Run Terraform init the Terraform root directory to initialize provider
+          name: Run Terraform init to initialize provider
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
@@ -74,19 +74,19 @@ jobs:
             echo "Terraform plan output:"
             terraform plan
             echo "Terraform apply output:"
-            terraform apply -auto-approve || export TF_APPLY_FAILED=true
+            terraform apply -auto-approve
             sleep 60
 
       # Run EKS Cluster (Deploy)
       - run:
-          name: Run Ansible playbooks
+          name: Deploy EKS Cluster
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
 
       # Destroy Resources
       - run:
-          name: Run Terraform commands
+          name: Destroy all resources
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
@@ -97,7 +97,7 @@ jobs:
       
       # Separate clean up task if a previous step fails and does not continue
       - run:
-            name: Cleanup Resources
+            name: Cleanup Resources when on_fail
             command: |
               export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
               export AWS_SECRET_KEY=$AWS_SECRET_KEY
