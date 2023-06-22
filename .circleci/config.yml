@@ -72,9 +72,9 @@ jobs:
             pwd
             terraform init
             echo "Terraform plan output:"
-            terraform plan -var-file=variables.tf
+            terraform plan -var-file=networking-variables.tf
             echo "Terraform apply output:"
-            terraform apply -auto-approve -var-file=variables.tf
+            terraform apply -auto-approve -var-file=networking-variables.tf
 
       # Run EKS Cluster (Deploy)
       - run:
