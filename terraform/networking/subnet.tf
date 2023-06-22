@@ -1,3 +1,13 @@
+# Define CIDR Block for Subnet 1
+variable "subnet_1_cidr" {
+  default = "10.0.1.0/24"
+}
+
+# Define CIDR Block for Subnet 2
+variable "subnet_2_cidr" {
+  default = "10.0.2.0/24"
+}
+
 # Create Public Subnet 1
 resource "aws_subnet" "ecom_app_subnet_1" {
   vpc_id = "${aws_vpc.ecom_app_vpc.id}"
