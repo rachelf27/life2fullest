@@ -75,6 +75,7 @@ jobs:
             terraform plan
             echo "Terraform apply output:"
             terraform apply -auto-approve
+            sleep 60
 
       # Run EKS Cluster (Deploy)
       - run:
