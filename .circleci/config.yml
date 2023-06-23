@@ -158,12 +158,13 @@ jobs:
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
+            cd terraform/
             pwd
             terraform init
             echo "Terraform plan output:"
             terraform plan
             echo "Terraform apply output:"
-            terraform apply -auto-approve
+            terraform apply -target=eks_cluster.tf -auto-approve
             sleep 60
 
       # Destroy Resources
@@ -172,37 +173,27 @@ jobs:
           command: |
             export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
-            cd terraform/networking/
-            pwd
-            echo "Terraform destroy output:"
-            terraform destroy -auto-approve
-            cd ..
             cd terraform/s3/
-            pwd
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
             cd ..
             cd terraform/dynamodb/
-            pwd
-            echo "Terraform destroy output:"
-            terraform destroy -auto-approve
-            cd ..
-            cd terraform/ec2/
-            pwd
-            echo "Terraform destroy output:"
-            terraform destroy -auto-approve
-            cd ..
-            cd terraform/elb/
-            pwd
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
             cd ..
             cd terraform/auto_scaling/
-            pwd
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
             cd ..
-            pwd
+            cd terraform/elb/
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve
+            cd ..
+            cd terraform/ec2/
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve
+            cd ..
+            cd terraform/networking/
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
       
@@ -212,37 +203,27 @@ jobs:
             command: |
               export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
               export AWS_SECRET_KEY=$AWS_SECRET_KEY
-              cd terraform/networking/
-              pwd
-              echo "Terraform destroy output:"
-              terraform destroy -auto-approve
-              cd ..
               cd terraform/s3/
-              pwd
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
               cd ..
               cd terraform/dynamodb/
-              pwd
-              echo "Terraform destroy output:"
-              terraform destroy -auto-approve
-              cd ..
-              cd terraform/ec2/
-              pwd
-              echo "Terraform destroy output:"
-              terraform destroy -auto-approve
-              cd ..
-              cd terraform/elb/
-              pwd
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
               cd ..
               cd terraform/auto_scaling/
-              pwd
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
               cd ..
-              pwd
+              cd terraform/elb/
+              echo "Terraform destroy output:"
+              terraform destroy -auto-approve
+              cd ..
+              cd terraform/ec2/
+              echo "Terraform destroy output:"
+              terraform destroy -auto-approve
+              cd ..
+              cd terraform/networking/
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
             when: on_fail
