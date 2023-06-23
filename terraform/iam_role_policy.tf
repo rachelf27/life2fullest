@@ -20,13 +20,10 @@ EOF
 
 # Get the S3 Bucket ARN from .tfstate to use in the EC2 Policy to access S3 Bucket
 data "terraform_remote_state" "s3_bucket" {
-  backend = "remote"
+   backend = "local"
 
   config = {
-    organization = "RachelMurphy"
-    workspaces = {
-      name = "ecom_app_workspace"
-    }
+    path = "../s3/terraform.tfstate"
   }
 }
 

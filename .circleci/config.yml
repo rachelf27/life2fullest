@@ -120,6 +120,11 @@ jobs:
             terraform apply -auto-approve
             sleep 60
 
+      # Populate initial Data
+      - run:
+          name: Populate Initial Data
+          command: node data/populateData.js
+
       # Provision ELB Resources
       - run:
           name: Provision ELB Resources
@@ -177,23 +182,23 @@ jobs:
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
             cd ..
-            cd terraform/dynamodb/
+            cd dynamodb/
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
             cd ..
-            cd terraform/auto_scaling/
+            cd auto_scaling/
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
             cd ..
-            cd terraform/elb/
+            cd elb/
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
             cd ..
-            cd terraform/ec2/
+            cd ec2/
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
             cd ..
-            cd terraform/networking/
+            cd networking/
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
       
@@ -207,23 +212,23 @@ jobs:
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
               cd ..
-              cd terraform/dynamodb/
+              cd dynamodb/
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
               cd ..
-              cd terraform/auto_scaling/
+              cd auto_scaling/
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
               cd ..
-              cd terraform/elb/
+              cd elb/
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
               cd ..
-              cd terraform/ec2/
+              cd ec2/
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
               cd ..
-              cd terraform/networking/
+              cd networking/
               echo "Terraform destroy output:"
               terraform destroy -auto-approve
             when: on_fail

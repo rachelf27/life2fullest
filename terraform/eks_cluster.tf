@@ -1,34 +1,16 @@
-data "terraform_remote_state" "vpc" {
-  backend = "remote"
+data "terraform_remote_state" "networking" {
+   backend = "local"
 
   config = {
-    organization = "RachelMurphy"
-    workspaces = {
-      name = "ecom_app_workspace"
-    }
+    path = "../networking/terraform.tfstate"
   }
 }
 
-
-data "terraform_remote_state" "subnets" {
-  backend = "remote"
-
-  config = {
-    organization = "RachelMurphy"
-    workspaces = {
-      name = "ecom_app_workspace"
-    }
-  }
-}
-
-data "terraform_remote_state" "alb_dns_name" {
- backend = "remote"
+data "terraform_remote_state" "_elb_alb_dns_name" {
+  backend = "local"
 
   config = {
-    organization = "RachelMurphy"
-    workspaces = {
-      name = "ecom_app_workspace"
-    }
+    path = "../elb/terraform.tfstate"
   }
 }
 
@@ -41,11 +23,10 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
-  vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_id = data.terraform_remote_state.networking.outputs.vpc_id
 
   eks_managed_node_groups = {
-    load_balancer_ip = data.terraform_remote_state.alb_dns_name.outputs.alb_dns_name
-
+    load_balancer_ip = data.terraform_remote_state._elb_alb_dns_name.outputs.alb_dns_name
     general = {
       desired_size    = 1
       min_size        = 1
@@ -53,8 +34,8 @@ module "eks" {
       instance_types  = ["t3.small"]
       capacity_type   = "ON_DEMAND"
       subnet_ids      = [
-        data.terraform_remote_state.subnets.outputs.subnet_id_1,
-        data.terraform_remote_state.subnets.outputs.subnet_id_2
+        data.terraform_remote_state.networking.outputs.subnet_id_1,
+        data.terraform_remote_state.networking.outputs.subnet_id_2
       ]
     }
 
@@ -65,8 +46,8 @@ module "eks" {
       instance_types  = ["t3.micro"]
       capacity_type   = "SPOT"
       subnet_ids      = [
-        data.terraform_remote_state.subnets.outputs.subnet_id_1,
-        data.terraform_remote_state.subnets.outputs.subnet_id_2
+        data.terraform_remote_state.networking.outputs.subnet_id_1,
+        data.terraform_remote_state.networking.outputs.subnet_id_2
       ]
     }
   }
