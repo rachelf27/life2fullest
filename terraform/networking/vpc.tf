@@ -7,6 +7,7 @@ variable "vpc_cidr" {
 resource "aws_vpc" "ecom_app_vpc" {
   cidr_block       = var.vpc_cidr
   instance_tenancy = "default"
+  enable_dns_hostnames = true
   tags = {
     Name = "E-Commerce App VPC"
   }
