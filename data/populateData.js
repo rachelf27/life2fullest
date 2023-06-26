@@ -1,4 +1,4 @@
-const dynamoDb = require("./index");
+const dynamoDb = require("../db/index");
 const products = require("./initialData.json");
 
 const tableName = "ecom-app-products-table";
