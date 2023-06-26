@@ -204,34 +204,34 @@ jobs:
       
       # Separate clean up task if a previous step fails and does not continue
       - run:
-            name: Cleanup Resources when on_fail
-            command: |
-              export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
-              export AWS_SECRET_KEY=$AWS_SECRET_KEY
-              cd terraform/s3/
-              echo "Terraform destroy output:"
-              terraform destroy -auto-approve
-              cd ..
-              cd dynamodb/
-              echo "Terraform destroy output:"
-              terraform destroy -auto-approve
-              cd ..
-              cd auto_scaling/
-              echo "Terraform destroy output:"
-              terraform destroy -auto-approve
-              cd ..
-              cd elb/
-              echo "Terraform destroy output:"
-              terraform destroy -auto-approve
-              cd ..
-              cd ec2/
-              echo "Terraform destroy output:"
-              terraform destroy -auto-approve
-              cd ..
-              cd networking/
-              echo "Terraform destroy output:"
-              terraform destroy -auto-approve
-            when: on_fail
+          name: Cleanup Resources when on_fail
+          command: |
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
+            cd terraform/s3/
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve || echo "Error destroying S3 resources"
+            cd ..
+            cd dynamodb/
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve || echo "Error destroying DynamoDB resources"
+            cd ..
+            cd auto_scaling/
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve || echo "Error destroying Auto Scaling resources"
+            cd ..
+            cd elb/
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve || echo "Error destroying ELB resources"
+            cd ..
+            cd ec2/
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve || echo "Error destroying EC2 resources"
+            cd ..
+            cd networking/
+            echo "Terraform destroy output:"
+            terraform destroy -auto-approve || echo "Error destroying Networking resources"
+          when: on_fail
 
 workflows:
   version: 2
