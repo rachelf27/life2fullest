@@ -6,7 +6,7 @@ module.exports = {
     },
     aws_remote_config: {
         accessKeyId: process.env.AWS_ACCESS_KEY,
-        secret_AccessKey: process.env.AWS_SECRET_KEY,
+        secretAccessKey: process.env.AWS_SECRET_KEY,
         region: 'us-east-1'
     }
 };
