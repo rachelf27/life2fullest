@@ -2,7 +2,7 @@ data "terraform_remote_state" "networking" {
    backend = "local"
 
   config = {
-    path = "../networking/terraform.tfstate"
+    path = "../terraform/networking/terraform.tfstate"
   }
 }
 
@@ -10,7 +10,7 @@ data "terraform_remote_state" "_elb_alb_dns_name" {
   backend = "local"
 
   config = {
-    path = "../elb/terraform.tfstate"
+    path = "../terraform/elb/terraform.tfstate"
   }
 }
 
