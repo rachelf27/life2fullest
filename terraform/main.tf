@@ -1,5 +1,14 @@
 // terraform/main.terraform
 
+module "networking" {
+  source = "./networking"
+}
+
+module "s3" {
+  depends_on = [module.networking]
+  source     = "./s3"
+}
+
 module "dynamodb" {
   depends_on = [module.networking]
   source     = "./dynamodb"
@@ -17,17 +26,17 @@ module "elb" {
   subnet_id_2 = module.networking.subnet_id_2
 }
 
-module "s3" {
-  depends_on = [module.networking]
-  source     = "./s3"
+module "iam_role_policy" {
+  source     = "./iam"
+  bucket_arn = module.s3.bucket_arn
 }
 
-module "networking" {
-  source = "./networking"
+module "sns" {
+  source      = "./sns"
 }
 
 module "eks_cluster" {
-  source       = "./eks_cluster.tf"
+  source       = "./eks"
   subnet_id_1  = module.networking.subnet_id_1
   subnet_id_2  = module.networking.subnet_id_2
   alb_dns_name = module.elb.alb_dns_name
@@ -35,11 +44,9 @@ module "eks_cluster" {
 }
 
 module "cloudwatch" {
-  source      = "./cloudwatch.tf"
-  instance_id = module.ec2.ami_id
+  source      = "./cloudwatch"
+  cluster_name = module.eks.cluster_name
+  sns_topic = module.sns.sns_topic
 }
 
-module "iam_role_policy" {
-  source     = "./iam_role_policy.tf"
-  bucket_arn = module.s3.bucket_arn
-}
+

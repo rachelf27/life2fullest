@@ -59,3 +59,7 @@ output "bucket_id" {
 output "bucket_arn" {
   value = module.s3.bucket_arn
 }
+
+output "sns_topic" {
+  value = module.sns.sns_topic
+}

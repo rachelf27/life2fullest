@@ -1,7 +1,12 @@
 // terraform/cloudwatch.tf
 
-variable "instance_id" {
-  description = "Instance Id"
+variable "sns_topic" {
+  description = "SNS Topic for AWS CPU Alarm"
+  type        = string
+}
+
+variable "cluster_name" {
+  description = "Name of teh EKS Cluster"
   type        = string
 }
 
@@ -14,9 +19,9 @@ resource "aws_cloudwatch_metric_alarm" "pod_cpu_usage_high" {
   period              = "300"
   statistic           = "Average"
   threshold           = "70"
-  alarm_actions       = [aws_sns_topic.cpu_alarm.arn]
+  alarm_actions       = [var.sns_topic.arn]
   dimensions = {
-    ClusterName = module.eks.cluster_name
-    Namespace = "your-app-namespace"
+    ClusterName = var.cluster_name
+    Namespace   = "your-app-namespace"
   }
 }
