@@ -18,6 +18,11 @@ variable "key_pair_name" {
   default     = "ecom_app_key"
 }
 
+variable "subnet_id_1" {
+  description = "Subnet Id 1"
+  type        = string
+}
+
 # Create EC2 instance
 resource "aws_instance" "ec2_instance" {
   ami           = data.aws_ami.ecom_app_aws_linux_image.id
