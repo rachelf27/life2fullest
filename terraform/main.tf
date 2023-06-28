@@ -27,7 +27,7 @@ module "networking" {
 }
 
 module "eks_cluster" {
-  source       = "./eks_cluster"
+  source       = "./eks_cluster.tf"
   subnet_id_1  = module.networking.subnet_id_1
   subnet_id_2  = module.networking.subnet_id_2
   alb_dns_name = module.elb.alb_dns_name
@@ -35,11 +35,11 @@ module "eks_cluster" {
 }
 
 module "cloudwatch" {
-  source      = "./cloudwatch"
+  source      = "./cloudwatch.tf"
   instance_id = module.ec2.ami_id
 }
 
 module "iam_role_policy" {
-  source     = "./iam_role_policy"
+  source     = "./iam_role_policy.tf"
   bucket_arn = module.s3.bucket_arn
 }
