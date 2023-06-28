@@ -52,5 +52,5 @@ output "ami_id" {
 
 output "instance_type" {
   description = "Type of instance"
-  value       = aws_instance.ec2_instance.instance_type
+  value       = aws_instance.ec2_instance[*].instance_type
 }

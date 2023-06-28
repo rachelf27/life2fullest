@@ -63,3 +63,7 @@ output "bucket_arn" {
 output "sns_topic" {
   value = module.sns.sns_topic
 }
+
+output "cluster_name" {
+  value       = module.eks.cluster_name
+}
