@@ -1,17 +1,23 @@
-data "terraform_remote_state" "networking" {
-   backend = "local"
+// terraform/eks_cluster.tf 
 
-  config = {
-    path = "../terraform/networking/terraform.tfstate"
-  }
+variable "alb_dns_name" {
+  description = "Application Load Balancer DNS Name"
+  type        = string
 }
 
-data "terraform_remote_state" "_elb_alb_dns_name" {
-  backend = "local"
+variable "subnet_id_1" {
+  description = "Subnet Id 1"
+  type        = string
+}
 
-  config = {
-    path = "../terraform/elb/terraform.tfstate"
-  }
+variable "subnet_id_2" {
+  description = "Subnet Id 2"
+  type        = string
+}
+
+variable "vpc_id" {
+  description = "VPC Id"
+  type        = string
 }
 
 module "eks" {
@@ -23,32 +29,26 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
-  vpc_id = data.terraform_remote_state.networking.outputs.vpc_id
+  vpc_id = var.vpc_id
 
   eks_managed_node_groups = {
-    load_balancer_ip = data.terraform_remote_state._elb_alb_dns_name.outputs.alb_dns_name
+    load_balancer_ip = var.alb_dns_name
     general = {
-      desired_size    = 1
-      min_size        = 1
-      max_size        = 1
-      instance_types  = ["t3.small"]
-      capacity_type   = "ON_DEMAND"
-      subnet_ids      = [
-        data.terraform_remote_state.networking.outputs.subnet_id_1,
-        data.terraform_remote_state.networking.outputs.subnet_id_2
-      ]
+      desired_size   = 1
+      min_size       = 1
+      max_size       = 1
+      instance_types = ["t3.small"]
+      capacity_type  = "ON_DEMAND"
+      subnet_ids = [var.subnet_id_1, var.subnet_id_2]
     }
 
     spot = {
-      desired_size    = 1
-      min_size        = 1
-      max_size        = 10
-      instance_types  = ["t3.micro"]
-      capacity_type   = "SPOT"
-      subnet_ids      = [
-        data.terraform_remote_state.networking.outputs.subnet_id_1,
-        data.terraform_remote_state.networking.outputs.subnet_id_2
-      ]
+      desired_size   = 1
+      min_size       = 1
+      max_size       = 10
+      instance_types = ["t3.micro"]
+      capacity_type  = "SPOT"
+      subnet_ids = [var.subnet_id_1, var.subnet_id_2]
     }
   }
 }

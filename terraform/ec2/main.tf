@@ -1,13 +1,15 @@
+// terraform/ec2/main.terraform 
+
 variable "number_of_instances" {
-    description = "Total number of instances"
-    type = string
-    default = "1"
+  description = "Total number of instances"
+  type        = string
+  default     = "1"
 }
 
 variable "instance_type" {
-    description = "Type of instance"
-    type = string
-    default = "t2.micro"
+  description = "Type of instance"
+  type        = string
+  default     = "t2.micro"
 }
 
 variable "key_pair_name" {
@@ -18,9 +20,9 @@ variable "key_pair_name" {
 
 # Create EC2 instance
 resource "aws_instance" "ec2_instance" {
-  ami        = data.aws_ami.ecom_app_aws_linux_image.id
+  ami           = data.aws_ami.ecom_app_aws_linux_image.id
   count         = var.number_of_instances
-  subnet_id     = data.terraform_remote_state.subnets.outputs.subnet_id_1
+  subnet_id     = var.subnet_id_1
   instance_type = var.instance_type
   key_name      = var.key_pair_name
 }
@@ -38,10 +40,7 @@ data "aws_ami" "ecom_app_aws_linux_image" {
   owners = ["amazon"]
 }
 
-data "terraform_remote_state" "subnets" {
-  backend = "local"
-
-  config = {
-    path = "../networking/terraform.tfstate"
-  }
+output "ami_id" {
+  description = "The id of the created ami"
+  value       = aws_instance.ec2_instance.ami
 }

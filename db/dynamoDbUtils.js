@@ -1,13 +1,14 @@
 const dynamoDb = require("./index");
-const AWS = require("aws-sdk");
+const { S3Client, ListObjectsV2Command } = require("@aws-sdk/client-s3");
 
 const bucketName = "ecom-app-products-s3-bucket";
 const jsonFilePath = "../data/initialData.json";
 
 // Get S3 objects from the bucket and store the URLs in DynamoDB
 const storeS3Urls = async (bucketName) => {
-  const s3 = new AWS.S3();
-  const objects = await s3.listObjectsV2({ Bucket: bucketName }).promise();
+  const s3 = new S3Client({ region: "us-east-1" });
+  const command = new ListObjectsV2Command({ Bucket: bucketName });
+  const objects = await s3.send(command)
   const urls = objects.Contents.map((object) => ({
     url: `https://${bucketName}.s3.amazonaws.com/${object.Key}`,
     productId: object.Key, // Assuming the S3 object Key can be used as the productId

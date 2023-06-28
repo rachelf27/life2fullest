@@ -1,3 +1,5 @@
+// terraform/networking/sg_elb.tf
+
 # Create Security Group for ELB
 resource "aws_security_group" "ecom_app_sg_elb" {
   name        = "e-commerce-sg-elb"
@@ -27,7 +29,7 @@ resource "aws_security_group" "ecom_app_sg_elb" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   # Set Outbound Rules for Internet Access 'to anywhere'
   egress {
     from_port   = 0
@@ -39,4 +41,8 @@ resource "aws_security_group" "ecom_app_sg_elb" {
   tags = {
     Name = "ecom_app_sg_elb"
   }
+}
+
+output "sg_elb_id" {
+  value = aws_security_group.ecom_app_sg_elb.id
 }
