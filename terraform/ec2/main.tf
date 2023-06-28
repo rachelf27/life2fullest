@@ -47,5 +47,10 @@ data "aws_ami" "ecom_app_aws_linux_image" {
 
 output "ami_id" {
   description = "The id of the created ami"
-  value       = aws_instance.ec2_instance.ami
+  value       = aws_instance.ec2_instance[*].ami
+}
+
+output "instance_type" {
+  description = "Type of instance"
+  value       = aws_instance.ec2_instance.instance_type
 }
