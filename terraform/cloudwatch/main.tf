@@ -19,7 +19,7 @@ resource "aws_cloudwatch_metric_alarm" "pod_cpu_usage_high" {
   period              = "300"
   statistic           = "Average"
   threshold           = "70"
-  alarm_actions       = [var.sns_topic.arn]
+  alarm_actions       = ["${var.sns_topic.arn}"]
   dimensions = {
     ClusterName = var.cluster_name
     Namespace   = "your-app-namespace"
