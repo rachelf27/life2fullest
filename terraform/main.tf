@@ -21,6 +21,7 @@ module "ec2" {
 
 module "elb" {
   source      = "./elb"
+  vpc_id       = module.networking.vpc_id
   sg_elb_id   = module.elb.sg_elb_id
   subnet_id_1 = module.networking.subnet_id_1
   subnet_id_2 = module.networking.subnet_id_2

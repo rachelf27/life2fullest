@@ -104,6 +104,7 @@ This will terminate/destroy all resources and prevent incurring unnecessary char
 ## Architecture Diagram
 
 Directory Structure:
+```
 ├── .circleci
    	├── config.yml
 ├── ansible
@@ -165,13 +166,21 @@ Directory Structure:
 	├── admin.js
 	├── public.js
 ├── terraform
-   ├── dynamodb
+	├── cloudwatch
 		├── main.tf
-   ├── ec2
+   	├── dynamodb
+		├── main.tf
+   	├── ec2
+		├── main.tf
+	├── eks
 		├── main.tf
 	├── elb
 		├── elb.tf
+	├── iam
+		├── main.tf
 	├── s3
+		├── main.tf
+	├── sns
 		├── main.tf
 	├── networking
 		├── igw.tf
@@ -181,15 +190,11 @@ Directory Structure:
    		├── sg_elb.tf
 		├── subnet.tf
 		├── vpc.tf
-	├── eks_cluster.tf
 	├── backend.tf
-	├── iam_role_policy.tf
    	├── provider.tf
 	├── userData.sh
 	├── main.tf
 	├── outputs.tf
-	├── cloudwatch.tf
-	├── sns.tf
 ├── backend.dockerfile (for backend)
 ├── .dockerignore
 ├── .gitignore
