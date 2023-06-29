@@ -32,21 +32,22 @@ module "eks" {
   vpc_id = var.vpc_id
   subnet_ids = [var.subnet_id_1, var.subnet_id_2]
 
+  eks_managed_node_group_defaults = {
+    disk_size              = 10
+    min_capacity           = 1
+    max_capacity           = 2
+    desired_capacity       = 1
+    capacity_type          = "SPOT"
+    enable_bootstrap_user_data = false
+  }
+
   eks_managed_node_groups = {
-    "general" = {
-      min_size      = 1
-      max_size      = 1
-      desired_size  = 1
+    "spot" = {
       instance_type = ["t3.small"]
-      capacity_type = "general"
       subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
     }
     "spot" = {
-      min_size      = 1
-      max_size      = 2
-      desired_size  = 1
       instance_type = ["t3.micro"]
-      capacity_type = "spot"
       subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
     }
   }
