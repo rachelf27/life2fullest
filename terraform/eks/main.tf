@@ -30,6 +30,8 @@ module "eks" {
   cluster_endpoint_public_access = true
 
   vpc_id = var.vpc_id
+  subnet_ids = [var.subnet_id_1, var.subnet_id_2]
+
 
   eks_managed_node_groups = {
     load_balancer_ip = var.alb_dns_name
@@ -40,8 +42,7 @@ module "eks" {
       instance_types = ["t3.small"]
       capacity_type  = "ON_DEMAND"
       subnet_ids = [var.subnet_id_1, var.subnet_id_2]
-    }
-
+    },
     spot = {
       desired_size   = 1
       min_size       = 1
