@@ -32,21 +32,21 @@ module "eks" {
   vpc_id = var.vpc_id
   subnet_ids = [var.subnet_id_1, var.subnet_id_2]
 
-  node_groups = {
-    general = {
-      name = "general"
-      instance_type = "t3.small"
-      desired_size  = 1
+  eks_managed_node_groups = {
+    "general" = {
+      min_size      = 1
       max_size      = 1
-      min_size      = 1
-      subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
-    },
-    spot = {
-      name = "spot"
-      instance_type = "t3.micro"
       desired_size  = 1
-      max_size      = 10
+      instance_type = ["t3.small"]
+      capacity_type = "general"
+      subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
+    }
+    "spot" = {
       min_size      = 1
+      max_size      = 2
+      desired_size  = 1
+      instance_type = ["t3.micro"]
+      capacity_type = "spot"
       subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
     }
   }
