@@ -20,6 +20,11 @@ variable "vpc_id" {
   type        = string
 }
 
+variable "iam_role_name" {
+  description = "The IAM Role name for EKS worker Nodes"
+  type        = string
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~>19.15"
@@ -29,24 +34,26 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
-  vpc_id = var.vpc_id
+  vpc_id     = var.vpc_id
   subnet_ids = [var.subnet_id_1, var.subnet_id_2]
 
   eks_managed_node_group_defaults = {
-    disk_size              = 10
-    min_capacity           = 1
-    max_capacity           = 2
-    desired_capacity       = 1
-    capacity_type          = "SPOT"
-    enable_bootstrap_user_data = false
+    disk_size                  = 10
+    min_capacity               = 1
+    max_capacity               = 2
+    desired_capacity           = 1
+    capacity_type              = "SPOT"
+    enable_bootstrap_user_data = true
+    user_data_template_path    = "../userData.sh"
+    iam_role_name              = var.iam_role_name
   }
 
   eks_managed_node_groups = {
-    "spot" = {
+    "spot-small" = {
       instance_type = ["t3.small"]
       subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
     }
-    "spot" = {
+    "spot-micro" = {
       instance_type = ["t3.micro"]
       subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
     }
