@@ -32,23 +32,24 @@ module "eks" {
   vpc_id = var.vpc_id
   subnet_ids = [var.subnet_id_1, var.subnet_id_2]
 
-
-  eks_managed_node_groups = {
-    load_balancer_ip = var.alb_dns_name
+  # The managed node groups definition starts here
+  managed_node_groups = {
     general = {
-    instance_type = "t3.small"
-    desired_size  = 1
-    max_size      = 1
-    min_size      = 1
-    subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
-  },
-  spot = {
-    instance_type = "t3.micro"
-    desired_size  = 1
-    max_size      = 10
-    min_size      = 1
-    subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
-  }
+      name = "general"
+      instance_type = "t3.small"
+      desired_size  = 1
+      max_size      = 1
+      min_size      = 1
+      subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
+    },
+    spot = {
+      name = "spot"
+      instance_type = "t3.micro"
+      desired_size  = 1
+      max_size      = 10
+      min_size      = 1
+      subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
+    }
   }
 }
 
