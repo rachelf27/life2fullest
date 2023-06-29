@@ -32,8 +32,7 @@ module "eks" {
   vpc_id = var.vpc_id
   subnet_ids = [var.subnet_id_1, var.subnet_id_2]
 
-  # The managed node groups definition starts here
-  managed_node_groups = {
+  node_groups = {
     general = {
       name = "general"
       instance_type = "t3.small"
