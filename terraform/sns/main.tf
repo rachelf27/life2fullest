@@ -23,6 +23,6 @@ resource "aws_sns_topic" "cpu_alarm" {
 EOF
 }
 
-output "sns_topic" {
+output "sns_topic_arn" {
   value = aws_sns_topic.cpu_alarm.arn
 }

@@ -47,7 +47,7 @@ module "eks" {
 module "cloudwatch" {
   source      = "./cloudwatch"
   cluster_name = module.eks.cluster_name
-  sns_topic = module.sns.sns_topic
+  sns_topic_arn = module.sns.sns_topic_arn
 }
 
 
