@@ -61,7 +61,7 @@ output "bucket_arn" {
 }
 
 output "sns_topic" {
-  value = module.sns.sns_topic
+  value = module.sns.sns_topic_arn
 }
 
 output "cluster_name" {
