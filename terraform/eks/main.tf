@@ -36,21 +36,19 @@ module "eks" {
   eks_managed_node_groups = {
     load_balancer_ip = var.alb_dns_name
     general = {
-      desired_size   = 1
-      min_size       = 1
-      max_size       = 1
-      instance_types = ["t3.small"]
-      capacity_type  = "ON_DEMAND"
-      subnet_ids = [var.subnet_id_1, var.subnet_id_2]
-    },
-    spot = {
-      desired_size   = 1
-      min_size       = 1
-      max_size       = 10
-      instance_types = ["t3.micro"]
-      capacity_type  = "SPOT"
-      subnet_ids = [var.subnet_id_1, var.subnet_id_2]
-    }
+    instance_type = "t3.small"
+    desired_size  = 1
+    max_size      = 1
+    min_size      = 1
+    subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
+  },
+  spot = {
+    instance_type = "t3.micro"
+    desired_size  = 1
+    max_size      = 10
+    min_size      = 1
+    subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
+  }
   }
 }
 
