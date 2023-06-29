@@ -75,17 +75,17 @@ resource "aws_iam_policy_attachment" "ecom_app_ec2_policy_role_attachment" {
 }
 
 resource "aws_iam_role_policy_attachment" "eks_node_AmazonEKSWorkerNodePolicy" {
-  role       = aws_iam_role.eks_node_role
+  roles       = [aws_iam_role.eks_node_role]
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
 }
 
 resource "aws_iam_role_policy_attachment" "eks_node_AmazonEKS_CNI_Policy" {
-  role       = aws_iam_role.eks_node_role
+  roles       = [aws_iam_role.eks_node_role]
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
 resource "aws_iam_role_policy_attachment" "eks_node_AmazonEC2ContainerRegistryReadOnly" {
-  role       = aws_iam_role.eks_node_role
+  roles       = [aws_iam_role.eks_node_role]
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 

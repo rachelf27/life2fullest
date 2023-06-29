@@ -44,7 +44,7 @@ module "eks" {
     desired_capacity           = 1
     capacity_type              = "SPOT"
     enable_bootstrap_user_data = true
-    user_data_template_path    = "../userData.sh"
+    user_data_template_path    = "./userData.sh"
     iam_role_name              = var.iam_role_name
   }
 
