@@ -89,7 +89,7 @@ resource "aws_iam_role_policy_attachment" "eks_node_AmazonEC2ContainerRegistryRe
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
-output "iam_role_name" {
-  description = "The IAM role for EKS worker Nodes"
-  value       = aws_iam_role.eks_node_role.name
+output "iam_role_arn" {
+  description = "The IAM role ARN for EKS worker Nodes"
+  value       = aws_iam_role.eks_node_role.arn
 }

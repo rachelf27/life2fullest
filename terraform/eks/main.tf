@@ -25,8 +25,8 @@ variable "key_name" {
   type        = string
 }
 
-variable "iam_role_name" {
-  description = "The IAM Role name for EKS worker Nodes"
+variable "iam_role_arn" {
+  description = "The IAM Role ARN for EKS worker Nodes"
   type        = string
 }
 
@@ -59,7 +59,7 @@ resource "kubernetes_config_map" "aws_auth_config_map" {
   }
    data = {
     mapRoles = <<YAML
-- rolearn: ${var.iam_role_name.arn}
+- rolearn: ${var.iam_role_arn}
   username: kubectl-access-user
   groups:
     - system:masters
@@ -130,7 +130,7 @@ module "eks" {
     capacity_type              = "SPOT"
     enable_bootstrap_user_data = true
     user_data_template_path    = "./userData.sh"
-    iam_role_name = var.iam_role_name
+    iam_role_name = var.iam_role_arn
     key_name      = var.key_name
     additional_security_group_ids = [aws_security_group.eks_worker_security_group.id]
   }

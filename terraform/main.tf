@@ -42,7 +42,7 @@ module "eks" {
   subnet_id_2  = module.networking.subnet_id_2
   alb_dns_name = module.elb.alb_dns_name
   vpc_id       = module.networking.vpc_id
-  iam_role_name = module.iam_role_policy.iam_role_name
+  iam_role_arn = module.iam_role_policy.iam_role_arn
   key_name = module.networking.key_name
 }
 
