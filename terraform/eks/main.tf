@@ -49,7 +49,7 @@ provider "kubernetes" {
   host                   = data.aws_eks_cluster.kube_cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.kube_cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.kube_cluster_auth.token
-  load_config_file       = false
+  #load_config_file       = false
 }
 
 resource "kubernetes_config_map" "aws_auth_config_map" {
