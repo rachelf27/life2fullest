@@ -123,11 +123,13 @@ module "eks" {
 
 data "aws_eks_cluster" "kube_cluster" {
   name = var.cluster_name
+  depends_on = [module.eks]
 }
 
 
 data "aws_eks_cluster_auth" "kube_cluster_auth" {
   name = var.cluster_name
+  depends_on = [module.eks]
 }
 
 provider "kubernetes" {
