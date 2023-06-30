@@ -58,7 +58,7 @@ jobs:
 
       - run:
           name: Check Directory Contents
-          command: ls -la
+          command: ls -R
       
 
       # Provision Resources
@@ -69,7 +69,8 @@ jobs:
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd terraform
             pwd
-            terraform state rm module.eks.data.aws_eks_cluster.kube_cluster
+            ls -al
+            grep -ri "terraform" --include=*.tfstate
             terraform plan -out=tfplan
             echo "Terraform apply output:"
             terraform apply -auto-approve tfplan
