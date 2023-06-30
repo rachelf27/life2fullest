@@ -46,6 +46,11 @@ jobs:
             echo -e $AWS_ACCESS_KEY
             echo -e $AWS_SECRET_KEY
 
+      - run:
+          name: Remove State File
+          command: rm -f .terraform/terraform.tfstate
+
+
       # Initialize Terraform Provider
       - run:
           name: Run Terraform init to Initialize Provider
