@@ -54,7 +54,6 @@ jobs:
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd terraform
             pwd
-            terraform refresh
             terraform init
 
       # Provision Resources
@@ -65,6 +64,7 @@ jobs:
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd terraform
             pwd
+            terraform refresh
             terraform plan -out=tfplan
             echo "Terraform apply output:"
             terraform apply -auto-approve tfplan
