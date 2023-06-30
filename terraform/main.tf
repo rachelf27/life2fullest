@@ -43,6 +43,7 @@ module "eks" {
   alb_dns_name = module.elb.alb_dns_name
   vpc_id       = module.networking.vpc_id
   iam_role_name = module.iam_role_policy.iam_role_name
+  key_name = module.networking.key_name
 }
 
 module "cloudwatch" {

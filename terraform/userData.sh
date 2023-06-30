@@ -14,7 +14,7 @@ sudo usermod -a -G docker ec2-user
 
 pwd > /home/ec2-user/current_dir.txt
 
-cd /home/ec2-user/life2fullest
-/usr/local/bin/docker-compose up -d
+#cd /home/ec2-user/life2fullest
+#/usr/local/bin/docker-compose up -d
 
 --==MYBOUNDARY==--
