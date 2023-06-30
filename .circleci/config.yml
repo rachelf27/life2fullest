@@ -46,11 +46,6 @@ jobs:
             echo -e $AWS_ACCESS_KEY
             echo -e $AWS_SECRET_KEY
 
-      - run:
-          name: Remove State File
-          command: rm -f .terraform/terraform.tfstate
-
-
       # Initialize Terraform Provider
       - run:
           name: Run Terraform init to Initialize Provider
@@ -63,8 +58,10 @@ jobs:
 
       - run:
           name: Check Directory Contents
-          command: ls -R
-      
+          command: |
+            cd terraform
+            ls -R
+    
 
       # Provision Resources
       - run:
@@ -76,6 +73,8 @@ jobs:
             pwd
             ls -al
             grep -ri "terraform" --include=*.tfstate
+            rm -f .terraform/terraform.tfstate
+            ls -al
             terraform plan -out=tfplan
             echo "Terraform apply output:"
             terraform apply -auto-approve tfplan
