@@ -138,21 +138,6 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.kube_cluster_auth.token
 }
 
-resource "kubernetes_config_map" "aws_auth_config_map" {
-  metadata {
-    name      = "aws-auth"
-    namespace = "kube-system"
-  }
-  data = {
-    mapRoles = <<YAML
-- rolearn: ${var.iam_role_arn}
-  username: kubectl-access-user
-  groups:
-    - system:masters
-YAML
-  }
-}
-
 output "cluster_name" {
   description = "The name of the cluster"
   value       = module.eks.cluster_name
