@@ -71,3 +71,7 @@ output "cluster_name" {
 output "iam_role_arn" {
   value = module.iam_role_policy.iam_role_arn
 }
+
+output "iam_role_name" {
+  value = module.iam_role_policy.iam_role_name
+}

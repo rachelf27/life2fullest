@@ -27,7 +27,7 @@ EOF
 }
 
 resource "aws_iam_role" "eks_node_role" {
-  name = "eks-node-role"
+  name               = "eks-node-role"
   assume_role_policy = <<EOF
     {
       "Version" : "2012-10-17",
@@ -92,4 +92,9 @@ resource "aws_iam_role_policy_attachment" "eks_node_AmazonEC2ContainerRegistryRe
 output "iam_role_arn" {
   description = "The IAM role ARN for EKS worker Nodes"
   value       = aws_iam_role.eks_node_role.arn
+}
+
+output "iam_role_name" {
+  description = "The IAM role name for EKS worker Nodes"
+  value       = aws_iam_role.eks_node_role.name
 }

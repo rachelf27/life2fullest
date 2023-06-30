@@ -21,7 +21,7 @@ module "ec2" {
 
 module "elb" {
   source      = "./elb"
-  vpc_id       = module.networking.vpc_id
+  vpc_id      = module.networking.vpc_id
   sg_elb_id   = module.networking.sg_elb_id
   subnet_id_1 = module.networking.subnet_id_1
   subnet_id_2 = module.networking.subnet_id_2
@@ -33,22 +33,23 @@ module "iam_role_policy" {
 }
 
 module "sns" {
-  source      = "./sns"
+  source = "./sns"
 }
 
 module "eks" {
-  source       = "./eks"
-  subnet_id_1  = module.networking.subnet_id_1
-  subnet_id_2  = module.networking.subnet_id_2
-  alb_dns_name = module.elb.alb_dns_name
-  vpc_id       = module.networking.vpc_id
-  iam_role_arn = module.iam_role_policy.iam_role_arn
-  key_name = module.networking.key_name
+  source        = "./eks"
+  subnet_id_1   = module.networking.subnet_id_1
+  subnet_id_2   = module.networking.subnet_id_2
+  alb_dns_name  = module.elb.alb_dns_name
+  vpc_id        = module.networking.vpc_id
+  iam_role_name = module.iam_role_policy.iam_role_name
+  iam_role_arn  = module.iam_role_policy.iam_role_arn
+  key_name      = module.networking.key_name
 }
 
 module "cloudwatch" {
-  source      = "./cloudwatch"
-  cluster_name = module.eks.cluster_name
+  source        = "./cloudwatch"
+  cluster_name  = module.eks.cluster_name
   sns_topic_arn = module.sns.sns_topic_arn
 }
 

@@ -26,7 +26,12 @@ variable "key_name" {
 }
 
 variable "iam_role_arn" {
-  description = "The IAM Role ARN for EKS worker Nodes"
+  description = "The ARN of the IAM Role for EKS worker Nodes"
+  type        = string
+}
+
+variable "iam_role_name" {
+  description = "The name of the IAM Role for EKS worker Nodes"
   type        = string
 }
 
@@ -37,19 +42,18 @@ variable "cluster_name" {
 }
 
 data "aws_eks_cluster" "kube_cluster" {
-  name = module.eks.cluster_id
+  name = var.cluster_name
 }
 
 
 data "aws_eks_cluster_auth" "kube_cluster_auth" {
-  name = module.eks.cluster_id
+  name = var.cluster_name
 }
 
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.kube_cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.kube_cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.kube_cluster_auth.token
-  #load_config_file       = false
 }
 
 resource "kubernetes_config_map" "aws_auth_config_map" {
@@ -57,7 +61,7 @@ resource "kubernetes_config_map" "aws_auth_config_map" {
     name      = "aws-auth"
     namespace = "kube-system"
   }
-   data = {
+  data = {
     mapRoles = <<YAML
 - rolearn: ${var.iam_role_arn}
   username: kubectl-access-user
@@ -123,15 +127,15 @@ module "eks" {
   #worker_create_security_group = true
 
   eks_managed_node_group_defaults = {
-    disk_size                  = 10
-    min_capacity               = 1
-    max_capacity               = 2
-    desired_capacity           = 1
-    capacity_type              = "SPOT"
-    enable_bootstrap_user_data = true
-    user_data_template_path    = "./userData.sh"
-    iam_role_name = var.iam_role_arn
-    key_name      = var.key_name
+    disk_size                     = 10
+    min_capacity                  = 1
+    max_capacity                  = 2
+    desired_capacity              = 1
+    capacity_type                 = "SPOT"
+    enable_bootstrap_user_data    = true
+    user_data_template_path       = "./userData.sh"
+    iam_role_name                 = var.iam_role_arn
+    key_name                      = var.key_name
     additional_security_group_ids = [aws_security_group.eks_worker_security_group.id]
   }
 
