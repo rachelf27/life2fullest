@@ -104,7 +104,7 @@ module "eks" {
     capacity_type                 = "SPOT"
     enable_bootstrap_user_data    = true
     user_data_template_path       = "./userData.sh"
-    iam_role_name                 = var.iam_role_arn
+    iam_role_name                 = var.iam_role_name
     key_name                      = var.key_name
     additional_security_group_ids = [aws_security_group.eks_worker_security_group.id]
   }
