@@ -54,6 +54,9 @@ jobs:
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd terraform
             pwd
+            grep -ri "terraform" --include=*.tfstate
+            rm -f .terraform/terraform.tfstate
+            ls -al
             terraform init
 
       - run:
@@ -71,9 +74,6 @@ jobs:
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd terraform
             pwd
-            ls -al
-            grep -ri "terraform" --include=*.tfstate
-            rm -f .terraform/terraform.tfstate
             ls -al
             terraform plan -out=tfplan
             echo "Terraform apply output:"
