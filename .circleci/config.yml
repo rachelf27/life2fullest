@@ -56,6 +56,11 @@ jobs:
             pwd
             terraform init
 
+      - run:
+          name: Check Directory Contents
+          command: ls -la
+      
+
       # Provision Resources
       - run:
           name: Provision Resources
