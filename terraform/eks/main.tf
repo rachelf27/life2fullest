@@ -121,23 +121,6 @@ module "eks" {
   }
 }
 
-data "aws_eks_cluster" "kube_cluster" {
-  name = var.cluster_name
-  depends_on = [module.eks]
-}
-
-
-data "aws_eks_cluster_auth" "kube_cluster_auth" {
-  name = var.cluster_name
-  depends_on = [module.eks]
-}
-
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.kube_cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.kube_cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.kube_cluster_auth.token
-}
-
 output "cluster_name" {
   description = "The name of the cluster"
   value       = module.eks.cluster_name
