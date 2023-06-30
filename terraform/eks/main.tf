@@ -57,7 +57,7 @@ resource "kubernetes_config_map" "aws_auth_config_map" {
     name      = "aws-auth"
     namespace = "kube-system"
   }
-  data {
+   data = {
     mapRoles = <<YAML
 - rolearn: ${var.iam_role_name.arn}
   username: kubectl-access-user
