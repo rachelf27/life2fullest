@@ -54,6 +54,7 @@ jobs:
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd terraform
             pwd
+            terraform refresh
             terraform init
 
       # Provision Resources
