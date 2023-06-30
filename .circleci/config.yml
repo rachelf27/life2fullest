@@ -54,15 +54,7 @@ jobs:
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd terraform
             pwd
-            ls -al
             terraform init
-
-      - run:
-          name: Check Directory Contents
-          command: |
-            cd terraform
-            ls -R
-    
 
       # Provision Resources
       - run:
@@ -72,7 +64,7 @@ jobs:
             export AWS_SECRET_KEY=$AWS_SECRET_KEY
             cd terraform
             pwd
-            ls -al
+            ls -R            
             terraform plan -out=tfplan
             echo "Terraform apply output:"
             terraform apply -auto-approve tfplan
