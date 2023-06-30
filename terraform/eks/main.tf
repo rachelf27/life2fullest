@@ -41,36 +41,6 @@ variable "cluster_name" {
   type        = string
 }
 
-data "aws_eks_cluster" "kube_cluster" {
-  name = var.cluster_name
-}
-
-
-data "aws_eks_cluster_auth" "kube_cluster_auth" {
-  name = var.cluster_name
-}
-
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.kube_cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.kube_cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.kube_cluster_auth.token
-}
-
-resource "kubernetes_config_map" "aws_auth_config_map" {
-  metadata {
-    name      = "aws-auth"
-    namespace = "kube-system"
-  }
-  data = {
-    mapRoles = <<YAML
-- rolearn: ${var.iam_role_arn}
-  username: kubectl-access-user
-  groups:
-    - system:masters
-YAML
-  }
-}
-
 resource "aws_security_group" "eks_worker_security_group" {
   name_prefix = "ecom-app-eks-worker-security-group"
   vpc_id      = var.vpc_id
@@ -148,6 +118,36 @@ module "eks" {
       instance_type = ["t3.micro"]
       subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
     }
+  }
+}
+
+data "aws_eks_cluster" "kube_cluster" {
+  name = var.cluster_name
+}
+
+
+data "aws_eks_cluster_auth" "kube_cluster_auth" {
+  name = var.cluster_name
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.kube_cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.kube_cluster.certificate_authority.0.data)
+  token                  = data.aws_eks_cluster_auth.kube_cluster_auth.token
+}
+
+resource "kubernetes_config_map" "aws_auth_config_map" {
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+  }
+  data = {
+    mapRoles = <<YAML
+- rolearn: ${var.iam_role_arn}
+  username: kubectl-access-user
+  groups:
+    - system:masters
+YAML
   }
 }
 
