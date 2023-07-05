@@ -46,6 +46,12 @@ jobs:
             echo -e $AWS_ACCESS_KEY
             echo -e $AWS_SECRET_KEY
 
+      - run:
+          name: Write SSH key
+          command: |
+            echo -e "$SSH_PRIVATE_KEY" > ~/ssh_key.pem
+            chmod 600 ~/ssh_key.pem
+
       # Initialize Terraform Provider
       - run:
           name: Run Terraform init to Initialize Provider
@@ -69,6 +75,25 @@ jobs:
             echo "Terraform apply output:"
             terraform apply -auto-approve tfplan
             sleep 60
+          when: always # Ensures the next steps are always run
+
+      - run:
+          name: Get logs if failure
+          command: |
+            INSTANCE_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=spot-micro" --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
+            ssh -i ~/ssh_key.pem -o StrictHostKeyChecking=no ec2-user@$INSTANCE_IP "cat /var/log/cloud-init.log" > cloud-init.log || true
+            ssh -i ~/ssh_key.pem -o StrictHostKeyChecking=no ec2-user@$INSTANCE_IP "cat /var/log/cloud-init-output.log" > cloud-init-output.log || true
+            ssh -i ~/ssh_key.pem -o StrictHostKeyChecking=no ec2-user@$INSTANCE_IP "cat /var/log/messages" > messages.log || true
+          when: on_fail # Only collect logs if the apply step fails
+      - store_artifacts: # This step makes the logs available in the CircleCI UI
+          path: /root/cloud-init.log
+          destination: cloud-init.log
+      - store_artifacts: 
+          path: /root/cloud-init-output.log
+          destination: cloud-init-output.log
+      - store_artifacts: 
+          path: /root/messages.log
+          destination: messages.log
 
       # Populate initial Data
       - run:
