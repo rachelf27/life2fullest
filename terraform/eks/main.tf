@@ -82,6 +82,29 @@ resource "aws_security_group" "eks_worker_security_group" {
   }
 }
 
+resource "aws_security_group" "eks_control_plane_security_group" {
+  name   = "eks_control_plane_sg"
+  vpc_id = var.vpc_id
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    security_groups = [aws_security_group.eks_worker_security_group.id]  # allow all traffic from worker nodes
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "eks_control_plane_sg"
+  }
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~>19.15"
@@ -93,6 +116,9 @@ module "eks" {
 
   vpc_id     = var.vpc_id
   subnet_ids = [var.subnet_id_1, var.subnet_id_2]
+
+  cluster_security_group_id = aws_security_group.eks_control_plane_security_group.id
+
 
   #worker_create_security_group = true
 
