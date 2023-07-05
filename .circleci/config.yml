@@ -88,6 +88,8 @@ jobs:
       - run:
           name: Get logs if failure
           command: |
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
             INSTANCE_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=spot-micro" --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
             ssh -i ~/ssh_key.pem -o StrictHostKeyChecking=no ec2-user@$INSTANCE_IP "cat /var/log/cloud-init.log" > cloud-init.log || true
             ssh -i ~/ssh_key.pem -o StrictHostKeyChecking=no ec2-user@$INSTANCE_IP "cat /var/log/cloud-init-output.log" > cloud-init-output.log || true
