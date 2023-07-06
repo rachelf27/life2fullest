@@ -12,14 +12,6 @@ output "orders_table_id" {
   value = module.dynamodb.orders_table_id
 }
 
-output "ami_id" {
-  value = module.ec2.ami_id
-}
-
-output "instance_type" {
-  value = module.ec2.instance_type
-}
-
 output "alb_dns_name" {
   value = module.elb.alb_dns_name
 }

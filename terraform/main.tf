@@ -14,11 +14,6 @@ module "dynamodb" {
   source     = "./dynamodb"
 }
 
-module "ec2" {
-  source      = "./ec2"
-  subnet_id_1 = module.networking.subnet_id_1
-}
-
 module "elb" {
   source      = "./elb"
   vpc_id      = module.networking.vpc_id
