@@ -45,6 +45,8 @@ module "eks" {
   iam_role_name = module.iam_role_policy.iam_role_name
   iam_role_arn  = module.iam_role_policy.iam_role_arn
   key_name      = module.networking.key_name
+  sg_eks_cluster_id = module.networking.sg_eks_cluster_id
+  sg_eks_all_nodes_id   = module.networking.sg_eks_all_nodes_id
 }
 
 module "cloudwatch" {

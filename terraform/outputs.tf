@@ -75,3 +75,20 @@ output "iam_role_arn" {
 output "iam_role_name" {
   value = module.iam_role_policy.iam_role_name
 }
+
+// edit these
+output "route_table_id" {
+  //value = aws_route_table.ecom_app_route.id
+  value = module.networking.route_table_id
+}
+
+output "sg_eks_all_nodes_id" {
+  //value = aws_security_group.eks_all_nodes_security_group.id
+  value = module.networking.sg_eks_all_nodes_id
+
+}
+
+output "sg_eks_cluster_id" {
+  //value = aws_security_group.eks_cluster_security_group.id
+  value = module.networking.sg_eks_cluster_id
+}

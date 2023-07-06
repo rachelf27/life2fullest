@@ -41,68 +41,14 @@ variable "cluster_name" {
   type        = string
 }
 
-resource "aws_security_group" "eks_worker_security_group" {
-  name_prefix = "ecom-app-eks-worker-security-group"
-  vpc_id      = var.vpc_id
-
-  # Set Inbound Rule for HTTP Access 'from anywhere'
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Set Inbound Rule HTTPS Access 'from anywhere'
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Set Inbound Rule SSH Access 'from anywhere'
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Set Outbound Rules Internet Access 'to anywhere'
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "ecom_app_sg_eks_nodes"
-  }
+variable "sg_eks_cluster_id" {
+  description = "The ID of the EKS Cluster Security Group"
+  type        = string
 }
 
-resource "aws_security_group" "eks_control_plane_security_group" {
-  name   = "eks_control_plane_sg"
-  vpc_id = var.vpc_id
-
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    security_groups = [aws_security_group.eks_worker_security_group.id]  # allow all traffic from worker nodes
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "eks_control_plane_sg"
-  }
+variable "sg_eks_all_nodes_id" {
+  description = "The ID of the EKS Nodes Security Group"
+  type        = string
 }
 
 module "eks" {
@@ -117,10 +63,7 @@ module "eks" {
   vpc_id     = var.vpc_id
   subnet_ids = [var.subnet_id_1, var.subnet_id_2]
 
-  cluster_security_group_id = aws_security_group.eks_control_plane_security_group.id
-
-
-  #worker_create_security_group = true
+  cluster_security_group_id = var.sg_eks_cluster_id
 
   eks_managed_node_group_defaults = {
     disk_size                     = 10
@@ -132,16 +75,12 @@ module "eks" {
     user_data_template_path       = "./userData.sh"
     iam_role_name                 = var.iam_role_name
     key_name                      = var.key_name
-    additional_security_group_ids = [aws_security_group.eks_worker_security_group.id]
+    additional_security_group_ids = [var.sg_eks_all_nodes_id]
   }
 
   eks_managed_node_groups = {
-    "spot-small" = {
+    "eks-tf-node" = {
       instance_type = ["t3.small"]
-      subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
-    }
-    "spot-micro" = {
-      instance_type = ["t3.micro"]
       subnet_ids    = [var.subnet_id_1, var.subnet_id_2]
     }
   }
