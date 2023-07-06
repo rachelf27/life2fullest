@@ -16,7 +16,7 @@ resource "aws_vpc_endpoint" "vpc-ec2-endpoint" {
   EOF
   security_group_ids = [
     aws_security_group.eks_cluster_security_group.id,
-    aws_security_group.aws_security_group.eks_all_nodes_security_group.id
+    aws_security_group.eks_all_nodes_security_group.id
   ]
   service_name = "com.amazonaws.us-east-1.ec2"
   subnet_ids = [
@@ -46,7 +46,7 @@ resource "aws_vpc_endpoint" "vpc-ecr-api-endpoint" {
   EOF
   security_group_ids = [
     aws_security_group.eks_cluster_security_group.id,
-    aws_security_group.aws_security_group.eks_all_nodes_security_group.id
+    aws_security_group.eks_all_nodes_security_group.id
   ]
   service_name = "com.amazonaws.us-east-1.ecr.api"
   subnet_ids = [
@@ -76,7 +76,7 @@ resource "aws_vpc_endpoint" "vpc-ecr-dkr-endpoint" {
   EOF
   security_group_ids = [
     aws_security_group.eks_cluster_security_group.id,
-    aws_security_group.aws_security_group.eks_all_nodes_security_group.id
+    aws_security_group.eks_all_nodes_security_group.id
   ]
   service_name = "com.amazonaws.us-east-1.ecr.dkr"
   subnet_ids = [
@@ -106,7 +106,7 @@ resource "aws_vpc_endpoint" "vpc-sts-endpoint" {
   EOF
   security_group_ids = [
     aws_security_group.eks_cluster_security_group.id,
-    aws_security_group.aws_security_group.eks_all_nodes_security_group.id
+    aws_security_group.eks_all_nodes_security_group.id
   ]
   service_name = "com.amazonaws.us-east-1.sts"
   subnet_ids = [
