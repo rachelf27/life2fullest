@@ -24,3 +24,8 @@ terraform.rc
 
 * any workspace files created
 *.code-workspace
+
+*.pem
+tfplan
+*.tfplan
+.terraform.lock.hcl

@@ -68,15 +68,6 @@ jobs:
             terraform plan -out=tfplan
             echo "Terraform apply output:"
             terraform apply -auto-approve tfplan
-            sleep 60
-
-      # Populate initial Data
-      - run:
-          name: Populate Initial Data
-          command: |
-            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
-            export AWS_SECRET_KEY=$AWS_SECRET_KEY
-            node data/populateData.js
 
       # Destroy Resources
       - run:
