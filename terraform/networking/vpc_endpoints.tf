@@ -150,3 +150,38 @@ resource "aws_vpc_endpoint_route_table_association" "example" {
   route_table_id  = aws_route_table.ecom_app_route.id
   vpc_endpoint_id = aws_vpc_endpoint.vpc-s3-endpoint.id
 }
+
+# Create DynamoDB VPC Gateway Endpoint
+resource "aws_vpc_endpoint" "vpc_dynamodb_endpoint" {
+  vpc_id       = aws_vpc.ecom_app_vpc.id
+  service_name = "com.amazonaws.us-east-1.dynamodb"
+
+  policy = <<EOF
+  {
+    "Version": "2008-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": "*",
+        "Action": "*",
+        "Resource": "*"
+      }
+    ]
+  }
+  EOF
+  
+  route_table_ids = [
+    aws_route_table.ecom_app_route.id,
+  ]
+
+  vpc_endpoint_type = "Gateway"
+  
+  tags = {
+    Name = "vpc-dynamodb-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint_route_table_association" "dynamodb" {
+  route_table_id  = aws_route_table.ecom_app_route.id
+  vpc_endpoint_id = aws_vpc_endpoint.vpc_dynamodb_endpoint.id
+}

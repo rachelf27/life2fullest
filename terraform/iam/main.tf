@@ -92,6 +92,32 @@ resource "aws_iam_policy" "ecom_app_ec2_policy" {
 EOF
 }
 
+# Create DynamoDB Policy for EC2
+resource "aws_iam_policy" "ecom_app_dynamodb_policy" {
+  name   = "ecom-app-dynamodb-policy"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "dynamodb:*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+# Attach IAM EC2 Role to DynamoDB Policy
+resource "aws_iam_policy_attachment" "ecom_app_dynamodb_policy_role_attachment" {
+  name       = "ecom-app-dynamodb-policy-role-attachment"
+  roles      = [aws_iam_role.ecom_app_ec2_role.name]
+  policy_arn = aws_iam_policy.ecom_app_dynamodb_policy.arn
+}
+
 # Attach IAM EC2 Role to Policy
 resource "aws_iam_policy_attachment" "ecom_app_ec2_policy_role_attachment" {
   name       = "ecom-app-ec2-policy-role-attachment"
