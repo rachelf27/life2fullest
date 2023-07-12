@@ -118,6 +118,13 @@ resource "aws_iam_policy_attachment" "ecom_app_dynamodb_policy_role_attachment" 
   policy_arn = aws_iam_policy.ecom_app_dynamodb_policy.arn
 }
 
+# Attach IAM EKA CLuster Role to DynamoDB Policy
+resource "aws_iam_policy_attachment" "eks_node_dynamodb_policy_attachment" {
+  name       = "eks-node-dynamodb-policy-attachment"
+  roles      = [aws_iam_role.eks_node_role.name]
+  policy_arn = aws_iam_policy.ecom_app_dynamodb_policy.arn
+}
+
 # Attach IAM EC2 Role to Policy
 resource "aws_iam_policy_attachment" "ecom_app_ec2_policy_role_attachment" {
   name       = "ecom-app-ec2-policy-role-attachment"
