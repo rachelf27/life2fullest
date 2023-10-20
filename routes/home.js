@@ -1,13 +1,14 @@
-const express = require('express');
+// routes/home.js
+
+const express = require("express");
 const router = express.Router();
-const productDb = require('../db/productDb');
 
 // GET /home page
-router.get('/home', async (req, res) => {
+router.get("/home", (req, res) => {
   try {
-    console.log("This is the home page")
+    res.json({ message });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to load home page' });
+    res.status(500).json({ error: "Failed to load home page" });
   }
 });
 

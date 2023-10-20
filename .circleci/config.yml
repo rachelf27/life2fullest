@@ -16,16 +16,47 @@ jobs:
             curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp.gpg
             echo "deb [signed-by=/usr/share/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
             sudo apt-get update && sudo apt-get install -y terraform
-      
+
+      - run:
+          name: Check AWS CLI Version
+          command: aws --version
+
+      # Install AWS CLI
+      - run:
+          name: Install AWS CLI
+          command: |
+            sudo apt-get install python3-pip
+            pip3 install awscli --upgrade --user
+            echo "export PATH=$PATH:~/.local/bin" >> $BASH_ENV
+
+      # Install Kubectl
+      - run:
+          name: Install kubectl
+          command: |
+            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            chmod +x kubectl
+            sudo mv kubectl /usr/local/bin/
+
+      # Clear NPM Cache
+      - run:
+          name: Clear npm cache
+          command: npm cache clean --force
+
       # Install dependencies
       - run:
           name: Install dependencies
           command: npm install
 
+      # Check Installed dependencies - DEBUG
+      - run:
+          name: Check installed dependencies
+          command: npm list
+
       # Set up and start Docker service
       - setup_remote_docker:
           version: 20.10.18
 
+      # Check Docker Credentials - DEBUG *** REMOVE
       - run:
           name: Check DOCKER_PASSWORD
           command: echo -e $DOCKER_PASSWORD
@@ -40,6 +71,7 @@ jobs:
             docker pull rachelvf27/life2fullest-backend:2
             docker build -t rachelvf27/life2fullest-backend:2 -f backend.dockerfile .
 
+      # Check AWS Credentials - DEBUG *** REMOVE
       - run:
           name: Check AWS Keys
           command: |
@@ -69,6 +101,44 @@ jobs:
             echo "Terraform apply output:"
             terraform apply -auto-approve tfplan
 
+      # Check current directory and files - DEBUG
+      - run:
+          name: Check current directory and files
+          command: |
+            pwd
+            ls -la
+
+      # Populate initial Data
+      - run:
+          name: Populate Initial Data
+          command: |
+            export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+            export AWS_SECRET_KEY=$AWS_SECRET_KEY
+            pwd
+            node data/populateData.js
+
+      # Deploy to the Cluster
+      - run:
+          name: Deploy to Kubernetes
+          command: |
+            aws eks update-kubeconfig --name e-com-app-eks-cluster
+            kubectl apply -f k8s/frontend-deployment.yaml
+            kubectl apply -f k8s/backend-deployment.yaml
+      
+      # Deploy Fluent Bit for logs collection
+      - run:
+          name: Deploy Fluent Bit
+          command: |
+            kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/fluent-bit/fluent-bit.yaml
+
+      # Get Pods and check Logs
+      - run:
+          name: Get Pods and Check Logs
+          command: |
+            kubectl get pods
+            kubectl logs life2fullest-frontend-*
+            kubectl logs life2fullest-backend-*
+
       # Destroy Resources
       - run:
           name: Destroy all resources
@@ -79,7 +149,7 @@ jobs:
             pwd
             echo "Terraform destroy output:"
             terraform destroy -auto-approve
-      
+
       # Separate clean up task if a previous step fails and does not continue
       - run:
           name: Cleanup Resources when on_fail

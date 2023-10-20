@@ -1,3 +1,5 @@
+// db/dynamoDbUtils.js
+
 const dynamoDb = require("./index");
 const { S3Client, ListObjectsV2Command } = require("@aws-sdk/client-s3");
 
@@ -8,10 +10,10 @@ const jsonFilePath = "../data/initialData.json";
 const storeS3Urls = async (bucketName) => {
   const s3 = new S3Client({ region: "us-east-1" });
   const command = new ListObjectsV2Command({ Bucket: bucketName });
-  const objects = await s3.send(command)
+  const objects = await s3.send(command);
   const urls = objects.Contents.map((object) => ({
     url: `https://${bucketName}.s3.amazonaws.com/${object.Key}`,
-    productId: object.Key, // Assuming the S3 object Key can be used as the productId
+    productId: object.Key.split(".")[0], // Assuming the S3 object Key can be used as the productId
   }));
 
   // Read the JSON file and parse its contents

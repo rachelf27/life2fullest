@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: life2fullest-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: life2fullest-frontend
+  template:
+    metadata:
+      labels:
+        app: life2fullest-frontend
+    spec:
+      containers:
+        - name: life2fullest-frontend
+          image: rachelvf27/life2fullest-frontend:latest
+          ports:
+            - containerPort: 8000
+          resources:
+            requests: # Minimum resources required
+              memory: "64Mi"
+              cpu: "250m"
+            limits: # Maximum resources that can be used
+              memory: "128Mi"
+              cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: life2fullest-frontend-service
+spec:
+  selector:
+    app: life2fullest-frontend # Selects any pod with this label
+  ports:
+    - protocol: TCP
+      port: 80 # The port that the service will be exposed on
+      targetPort: 8000 # The port that is exposed by the selected pods
+  type: LoadBalancer # Exposes the service externally using the cloud provider's load balancer

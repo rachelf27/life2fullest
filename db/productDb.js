@@ -1,3 +1,5 @@
+// db/productDb.js
+
 const {
   putItem,
   getItem,
@@ -5,7 +7,6 @@ const {
   updateItem,
   queryItem,
   scanItems,
-  storeS3Urls,
 } = require("./dynamoDbUtils");
 
 // Add an item to the Product Table
@@ -17,10 +18,13 @@ const addProduct = async (productId, name, price, description, imageUrl) => {
       name: name,
       price: price,
       description: description,
-      imageUrl: imageUrl
-    }
+      imageUrl: imageUrl,
+    },
   };
-  return putItem(params, "Error occurred while inserting an item from products");
+  return putItem(
+    params,
+    "Error occurred while inserting an item from products"
+  );
 };
 
 // Get an item from the Product Table
@@ -42,7 +46,10 @@ const deleteProduct = async (productId) => {
       productId: productId,
     },
   };
-  return deleteItem(params, "Error occurred while deleting an item from products");
+  return deleteItem(
+    params,
+    "Error occurred while deleting an item from products"
+  );
 };
 
 // Update an item in the Product Table
@@ -57,10 +64,13 @@ const updateProduct = async (
       productId: productId,
     },
     UpdateExpression: updateExpression,
-    ExpressionAttributesValues: expressionAttributeValues,
+    ExpressionAttributeValues: expressionAttributeValues,
     ReturnValues: "UPDATED_NEW",
   };
-  return updateItem(params, "Error occurred while updating an item from products");
+  return updateItem(
+    params,
+    "Error occurred while updating an item from products"
+  );
 };
 
 // Query an item from the Product Table
@@ -71,7 +81,10 @@ const queryProduct = async (productId) => {
       productId: productId,
     },
   };
-  return queryItem(params, "Error occurred while querying an item from products");
+  return queryItem(
+    params,
+    "Error occurred while querying an item from products"
+  );
 };
 
 // Scan for all items in Product Table

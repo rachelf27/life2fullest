@@ -6,30 +6,11 @@ variable "bucket_arn" {
   type        = string
 }
 
-# Create IAM Role for EC2
-resource "aws_iam_role" "ecom_app_ec2_role" {
-  name               = "ecom-app-ec2-role"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      }
-    }
-  ]
-}
-EOF
-}
 
 # Create IAM Role for EKS Cluster
 resource "aws_iam_role" "ecom_eks_cluster_role" {
   name               = "ecom-eks-cluster-role"
-  assume_role_policy = <<EOF
-{
+  assume_role_policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -40,63 +21,49 @@ resource "aws_iam_role" "ecom_eks_cluster_role" {
             "Action": "sts:AssumeRole"
         }
     ]
-}
-EOF
+  })
   tags = {
     Name = "ecom-eks-cluster-role"
   }
 }
 
-# Create IAM Role for EKS Nodes
 resource "aws_iam_role" "eks_node_role" {
-  name               = "ecom-eks-node-role"
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "Service": "ec2.amazonaws.com"
-            },
-            "Action": "sts:AssumeRole"
-        }
+  name = "ecom-eks-node-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
     ]
-}
-EOF
-  tags = {
-    Name = "ecom-eks-node-role"
-  }
+  })
 }
 
-
-# Create EC2 Policy to list and download objects in S3 bucket
-resource "aws_iam_policy" "ecom_app_ec2_policy" {
-  name   = "ecom-app-ec2-policy"
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:GetObject",
-        "s3:List*"
+resource "aws_iam_policy" "ecom_app_s3_policy" {
+  name = "ecom-app-s3-policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = [
+        "s3:Put*",
+        "s3:Get*",
+        "s3:List*",
+        "s3:Delete*"
       ],
-      "Effect": "Allow",
-      "Resource": [
-        "${var.bucket_arn}"
-      ]
-    }
-  ]
-}
-EOF
+      Effect   = "Allow",
+      Resource = ["${var.bucket_arn}/*", "${var.bucket_arn}", "*"]
+    }]
+  })
 }
 
 # Create DynamoDB Policy for EC2
 resource "aws_iam_policy" "ecom_app_dynamodb_policy" {
   name   = "ecom-app-dynamodb-policy"
-  policy = <<EOF
-{
+  policy = jsonencode({
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -105,55 +72,64 @@ resource "aws_iam_policy" "ecom_app_dynamodb_policy" {
       ],
       "Effect": "Allow",
       "Resource": "*"
-    }
-  ]
-}
-EOF
+   }]
+  })
 }
 
-# Attach IAM EC2 Role to DynamoDB Policy
-resource "aws_iam_policy_attachment" "ecom_app_dynamodb_policy_role_attachment" {
-  name       = "ecom-app-dynamodb-policy-role-attachment"
-  roles      = [aws_iam_role.ecom_app_ec2_role.name]
-  policy_arn = aws_iam_policy.ecom_app_dynamodb_policy.arn
+# Create CloudWatch Policy to push logs to CloudWatch
+resource "aws_iam_policy" "eks_cloudwatch_logs_policy" {
+  name   = "ecom-app-cloudwatch-logs-policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogStreams"
+        ],
+        Effect   = "Allow",
+        Resource = ["*"]
+      }
+    ]
+  })
 }
 
-# Attach IAM EKA CLuster Role to DynamoDB Policy
-resource "aws_iam_policy_attachment" "eks_node_dynamodb_policy_attachment" {
-  name       = "eks-node-dynamodb-policy-attachment"
-  roles      = [aws_iam_role.eks_node_role.name]
-  policy_arn = aws_iam_policy.ecom_app_dynamodb_policy.arn
-}
 
-# Attach IAM EC2 Role to Policy
-resource "aws_iam_policy_attachment" "ecom_app_ec2_policy_role_attachment" {
-  name       = "ecom-app-ec2-policy-role-attachment"
-  roles      = [aws_iam_role.ecom_app_ec2_role.name]
-  policy_arn = aws_iam_policy.ecom_app_ec2_policy.arn
-}
-
-# Attach IAM EKS Cluster Role to Cluster Policy
-resource "aws_iam_role_policy_attachment" "ecom_eks_AmazonEKSClusterPolicy" {
-  role       = aws_iam_role.ecom_eks_cluster_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-}
-
-# Attach IAM EKS Node Role to EKS Worker Node Policy
-resource "aws_iam_role_policy_attachment" "eks_node_AmazonEKSWorkerNodePolicy" {
+# Attach Custom Policies to EKS Node Role
+resource "aws_iam_role_policy_attachment" "eks_node_custom_policies" {
+  for_each = {
+    s3       = aws_iam_policy.ecom_app_s3_policy.arn,
+    dynamodb = aws_iam_policy.ecom_app_dynamodb_policy.arn
+  }
+  policy_arn = each.value
   role       = aws_iam_role.eks_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
 }
 
-# Attach IAM EKS Node Role to EKS CNI Policy
-resource "aws_iam_role_policy_attachment" "eks_node_AmazonEKS_CNI_Policy" {
-  role       = aws_iam_role.eks_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+# Attach AWS Managed Policies using Data Blocks
+data "aws_iam_policy" "aws_managed_policies" {
+  for_each = toset([
+    "AmazonEKSClusterPolicy",
+    "AmazonEKSWorkerNodePolicy",
+    "AmazonEKS_CNI_Policy",
+    "AmazonEC2ContainerRegistryReadOnly"
+  ])
+
+  arn = "arn:aws:iam::aws:policy/${each.key}"
 }
 
-# Attach IAM EKS Node Role to EKS Conatiner Registry Policy
-resource "aws_iam_role_policy_attachment" "eks_node_AmazonEC2ContainerRegistryReadOnly" {
+resource "aws_iam_role_policy_attachment" "aws_managed_policies" {
+  for_each   = data.aws_iam_policy.aws_managed_policies
+  policy_arn = each.value.arn
+
+  # Conditional assignment to attach the policy to the right role
+  role = each.key == "AmazonEKSClusterPolicy" ? aws_iam_role.ecom_eks_cluster_role.name : aws_iam_role.eks_node_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "eks_cloudwatch_logs_attachment" {
+  policy_arn = aws_iam_policy.eks_cloudwatch_logs_policy.arn
   role       = aws_iam_role.eks_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
 output "iam_eks_cluster_role_name" {

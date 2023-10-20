@@ -1,11 +1,11 @@
 // terraform/networking/subnet.tf
 
-# Define CIDR Block for Subnet 1
+# Define the CIDR Block for Subnet 1
 variable "subnet_1_cidr" {
   default = "10.0.1.0/24"
 }
 
-# Define CIDR Block for Subnet 2
+# Define the CIDR Block for Subnet 2
 variable "subnet_2_cidr" {
   default = "10.0.2.0/24"
 }
@@ -32,6 +32,7 @@ resource "aws_subnet" "ecom_app_subnet_2" {
   }
 }
 
+// Output Subnet IDs
 output "subnet_id_1" {
   value = aws_subnet.ecom_app_subnet_1.id
 }

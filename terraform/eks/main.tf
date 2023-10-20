@@ -1,10 +1,5 @@
 // terraform/eks_cluster.tf 
 
-variable "alb_dns_name" {
-  description = "Application Load Balancer DNS Name"
-  type        = string
-}
-
 variable "subnet_id_1" {
   description = "Subnet Id 1"
   type        = string
@@ -64,6 +59,41 @@ module "eks" {
   subnet_ids = [var.subnet_id_1, var.subnet_id_2]
 
   cluster_security_group_id = var.sg_eks_cluster_id
+
+  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  
+  # Extend cluster security group rules
+  cluster_security_group_additional_rules = {
+    egress_nodes_ephemeral_ports_tcp = {
+      description                = "To node 1025-65535"
+      protocol                   = "tcp"
+      from_port                  = 1025
+      to_port                    = 65535
+      type                       = "egress"
+      source_node_security_group = true
+    }
+  }
+
+  # Extend node-to-node security group rules
+  node_security_group_additional_rules = {
+    ingress_self_all = {
+      description = "Node to node all ports/protocols"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      type        = "ingress"
+      self        = true
+    }
+    egress_all = {
+      description      = "Node all egress"
+      protocol         = "-1"
+      from_port        = 0
+      to_port          = 0
+      type             = "egress"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = ["::/0"]
+    }
+  }
 
   eks_managed_node_group_defaults = {
     disk_size                     = 10

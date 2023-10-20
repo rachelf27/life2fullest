@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/rachelf27/life2fullest#readme",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.348.0",
+    "@aws-sdk/client-dynamodb": "^3.423.0",
+    "@aws-sdk/client-s3": "^3.431.0",
+    "@aws-sdk/lib-dynamodb": "latest",
     "aws-sdk": "^2.1396.0",
     "axios": "^1.4.0",
     "cors": "^2.8.5",

@@ -12,18 +12,6 @@ output "orders_table_id" {
   value = module.dynamodb.orders_table_id
 }
 
-output "alb_dns_name" {
-  value = module.elb.alb_dns_name
-}
-
-output "alb_id" {
-  value = module.elb.alb_id
-}
-
-output "alb_target_grp_arn" {
-  value = module.elb.alb_target_grp_arn
-}
-
 output "vpc_id" {
   value = module.networking.vpc_id
 }
@@ -34,10 +22,6 @@ output "subnet_id_1" {
 
 output "subnet_id_2" {
   value = module.networking.subnet_id_2
-}
-
-output "sg_elb_id" {
-  value = module.networking.sg_elb_id
 }
 
 output "key_name" {

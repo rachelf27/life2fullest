@@ -1,114 +1,92 @@
 [
-    {
-        "productId": "1",
-        "name": "Dog Painting",
-        "price": 10.99,
-        "description": "This is a painting of a Golden Retriever Bailey playing in the backyard.",
-        "imageUrl": "https://example.com/product1.jpg"
-    },
-    {
-        "productId": "2",
-        "name": "Beach Painting",
-        "price": 12.99,
-        "description": "This is a painting of a girl at the beach. ",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "3",
-        "name": "Beauty Soaps",
-        "price": 19.99,
-        "description": "This is a beauty soap made with rose essential oil and goat milk.",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "4",
-        "name": "Bee Hive Soaps",
-        "price": 5.99,
-        "description": "These are small bee hive shape soaps made with oatmeal, honey and almond oil.",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "5",
-        "name": "Body Scrubs",
-        "price": 19.99,
-        "description": "These are Body Scrubs made with various Epsom Salts, essential oils and Coconut oil.",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "6",
-        "name": "Cat Painting",
-        "price": 10.99,
-        "description": "This is a Cat Painting.",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "7",
-        "name": "Charcoal Soaps",
-        "price": 13.99,
-        "description": "These Charcoal Soaps made with Activated Charcoal.",
-        "imageUrl": "https://example.com/product1.jpg"
-    },
-    {
-        "productId": "8",
-        "name": "Christmas Mini Candles",
-        "price": 5.99,
-        "description": "Mini soy candles for Christmas time.",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "9",
-        "name": "Pretty Tin Votive Candles",
-        "price": 8.99,
-        "description": "These designed candle holders has various essence candles made with soy.",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "10",
-        "name": "Relax Soy Candle",
-        "price": 10.99,
-        "description": "This soy candle is for relaxation, it includes Lavender, Rose, & Eucalyptus",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "11",
-        "name": "Soap Gift Bundle",
-        "price": 25.99,
-        "description": "These are spring time soap bundles.",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "12",
-        "name": "Soap Variety Bundle",
-        "price": 59.99,
-        "description": "There are variety of soaps made with various all natural oils and bases",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "13",
-        "name": "Spa Eye Pillows",
-        "price": 19.99,
-        "description": "These are Spa Eye Pillows with various essential oils for relaxation and sleep.",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "14",
-        "name": "Sunrise Painting",
-        "price": 19.99,
-        "description": "This is a sunrise painting.",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "15",
-        "name": "Epsom Salt Soaps",
-        "price": 14.99,
-        "description": "These are Epsom Salt Soaps made with Coconut.",
-        "imageUrl": "https://example.com/product2.jpg"
-    },
-    {
-        "productId": "16",
-        "name": "Tall Eucalyptus Candle",
-        "price": 19.99,
-        "description": "This soy candle is for relaxation, it includes Rosemary and Sage.",
-        "imageUrl": "https://example.com/product2.jpg"
-    }
+  {
+    "productId": "1",
+    "name": "BaileyPainting",
+    "price": 10.99,
+    "description": "This is a painting of a Golden Retriever Bailey playing in the backyard."
+  },
+  {
+    "productId": "2",
+    "name": "BeachPainting",
+    "price": 12.99,
+    "description": "This is a painting of a girl at the beach. "
+  },
+  {
+    "productId": "3",
+    "name": "BeautySoaps",
+    "price": 19.99,
+    "description": "This is a beauty soap made with rose essential oil and goat milk."
+  },
+  {
+    "productId": "4",
+    "name": "BeeSoaps",
+    "price": 5.99,
+    "description": "These are small bee hive shape soaps made with oatmeal, honey and almond oil."
+  },
+  {
+    "productId": "5",
+    "name": "BodyScrubs",
+    "price": 19.99,
+    "description": "These are Body Scrubs made with various Epsom Salts, essential oils and Coconut oil."
+  },
+  {
+    "productId": "6",
+    "name": "CatPainting",
+    "price": 10.99,
+    "description": "This is a Cat Painting."
+  },
+  {
+    "productId": "7",
+    "name": "CharcoalSoaps",
+    "price": 13.99,
+    "description": "These Charcoal Soaps made with Activated Charcoal."
+  },
+  {
+    "productId": "8",
+    "name": "ChristmasCandles",
+    "price": 5.99,
+    "description": "Mini soy candles for Christmas time."
+  },
+  {
+    "productId": "9",
+    "name": "PrettyTinCandles",
+    "price": 8.99,
+    "description": "These designed candle holders has various essence candles made with soy."
+  },
+  {
+    "productId": "10",
+    "name": "RelaxCandle",
+    "price": 10.99,
+    "description": "This soy candle is for relaxation, it includes Lavender, Rose, & Eucalyptus"
+  },
+  {
+    "productId": "11",
+    "name": "SoapVarietyBundle",
+    "price": 59.99,
+    "description": "There are variety of soaps made with various all natural oils and bases"
+  },
+  {
+    "productId": "12",
+    "name": "SpaEyePillows",
+    "price": 19.99,
+    "description": "These are Spa Eye Pillows with various essential oils for relaxation and sleep."
+  },
+  {
+    "productId": "13",
+    "name": "SunrisePainting",
+    "price": 19.99,
+    "description": "This is a sunrise painting."
+  },
+  {
+    "productId": "14",
+    "name": "EpsomSaltNCoconutSoaps",
+    "price": 14.99,
+    "description": "These are Epsom Salt Soaps made with Coconut."
+  },
+  {
+    "productId": "15",
+    "name": "TallEucalyptusCandle",
+    "price": 19.99,
+    "description": "This soy candle is for relaxation, it includes Rosemary and Sage."
+  }
 ]

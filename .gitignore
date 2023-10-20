@@ -1,31 +1,28 @@
+# Node.js related
 /node_modules
 package-lock.json
-.DS_Store // only include this if you are on a Mac
-/build
 npm-debug.log
+/build
 .env
 
-# Local .terraform directories
-**/.terraform/*
+# macOS system files
+.DS_Store
 
-# .tfstate files
+# Terraform related
+**/.terraform/*
 *.tfstate
 *.tfstate.*
-
-# .tfvars likely sensitive data files
 *.tfvars
 *.tfvars.json
-
-# Ignore CLI configuration files
 .terraformrc
 terraform.rc
-
-.dockerignore
-
-* any workspace files created
-*.code-workspace
-
-*.pem
-tfplan
-*.tfplan
+.tfplan
 .terraform.lock.hcl
+
+# Binaries
+kubectl
+
+# Other
+.dockerignore
+*.code-workspace
+*.pem

@@ -15,7 +15,7 @@ variable "ecom_app_orders_table" {
   default = "ecom-app-orders-table"
 }
 
-# Create DynamoDB Products Table
+# Create the DynamoDB Products Table
 resource "aws_dynamodb_table" "ecom_app_products_table" {
   name           = var.ecom_app_products_table
   billing_mode   = "PROVISIONED"
@@ -39,7 +39,7 @@ resource "aws_dynamodb_table" "ecom_app_products_table" {
   }
 }
 
-# Create DynamoDB Users Table
+# Create the DynamoDB Users Table
 resource "aws_dynamodb_table" "ecom_app_users_table" {
   name           = var.ecom_app_users_table
   billing_mode   = "PROVISIONED"
@@ -63,7 +63,7 @@ resource "aws_dynamodb_table" "ecom_app_users_table" {
   }
 }
 
-# Create DynamoDB Orders Table
+# Create the DynamoDB Orders Table
 resource "aws_dynamodb_table" "ecom_app_orders_table" {
   name           = var.ecom_app_orders_table
   billing_mode   = "PROVISIONED"
@@ -87,6 +87,7 @@ resource "aws_dynamodb_table" "ecom_app_orders_table" {
   }
 }
 
+// Output Product, Users, and Orders Table IDs
 output "product_table_id" {
   description = "DynamoDB Product Table ID"
   value       = aws_dynamodb_table.ecom_app_products_table.id

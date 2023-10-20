@@ -1,5 +1,7 @@
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+// client/src/App.js
+
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 const App = ({ children }) => (
   <>
