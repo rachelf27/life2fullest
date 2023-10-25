@@ -27,6 +27,7 @@ resource "aws_iam_role" "ecom_eks_cluster_role" {
   }
 }
 
+# Create IAM Role for EKS Node
 resource "aws_iam_role" "eks_node_role" {
   name = "ecom-eks-node-role"
   assume_role_policy = jsonencode({
@@ -43,6 +44,7 @@ resource "aws_iam_role" "eks_node_role" {
   })
 }
 
+# Create S3 Policy
 resource "aws_iam_policy" "ecom_app_s3_policy" {
   name = "ecom-app-s3-policy"
   policy = jsonencode({
@@ -95,7 +97,6 @@ resource "aws_iam_policy" "eks_cloudwatch_logs_policy" {
     ]
   })
 }
-
 
 # Attach Custom Policies to EKS Node Role
 resource "aws_iam_role_policy_attachment" "eks_node_custom_policies" {

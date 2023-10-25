@@ -1,8 +1,9 @@
-// terraform/networking/sg_nodes.tf
+// terraform/networking/sg_elb.tf
 
-# Create the Security Group for EKS Nodes
-resource "aws_security_group" "eks_all_nodes_security_group" {
-  name_prefix = "ecom-app-eks-all_nodes-security-group"
+# Create Security Group for ELB
+resource "aws_security_group" "ecom_app_sg_elb" {
+  name        = "e-commerce-sg-elb"
+  description = "Module for ELB"
   vpc_id      = aws_vpc.ecom_app_vpc.id
 
   # Set Inbound Rule for HTTP Access 'from anywhere'
@@ -13,7 +14,7 @@ resource "aws_security_group" "eks_all_nodes_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Set Inbound Rule HTTPS Access 'from anywhere'
+  # Set Inbound Rule for HTTPS Access 'from anywhere'
   ingress {
     from_port   = 443
     to_port     = 443
@@ -21,7 +22,7 @@ resource "aws_security_group" "eks_all_nodes_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Set Inbound Rule SSH Access 'from anywhere'
+  # Set Inbound Rule for SSH Access 'from anywhere'
   ingress {
     from_port   = 22
     to_port     = 22
@@ -29,7 +30,7 @@ resource "aws_security_group" "eks_all_nodes_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Set Outbound Rules Internet Access 'to anywhere'
+  # Set Outbound Rules for Internet Access 'to anywhere'
   egress {
     from_port   = 0
     to_port     = 0
@@ -38,10 +39,10 @@ resource "aws_security_group" "eks_all_nodes_security_group" {
   }
 
   tags = {
-    Name = "ecom_app_all_nodes_sg"
+    Name = "ecom_app_sg_elb"
   }
 }
 
-output "sg_eks_all_nodes_id" {
-  value = aws_security_group.eks_all_nodes_security_group.id
+output "sg_elb_id" {
+  value = aws_security_group.ecom_app_sg_elb.id
 }

@@ -1,8 +1,9 @@
-// terraform/networking/sg_nodes.tf
+// terraform/networking/sg_ec2.tf
 
-# Create the Security Group for EKS Nodes
-resource "aws_security_group" "eks_all_nodes_security_group" {
-  name_prefix = "ecom-app-eks-all_nodes-security-group"
+# Create Security Group for EC2
+resource "aws_security_group" "ecom_app_sg_ec2" {
+  name        = "e-commerce-app-sg-ec2"
+  description = "Module for EC2"
   vpc_id      = aws_vpc.ecom_app_vpc.id
 
   # Set Inbound Rule for HTTP Access 'from anywhere'
@@ -38,10 +39,6 @@ resource "aws_security_group" "eks_all_nodes_security_group" {
   }
 
   tags = {
-    Name = "ecom_app_all_nodes_sg"
+    Name = "ecom_app_sg_ec2"
   }
-}
-
-output "sg_eks_all_nodes_id" {
-  value = aws_security_group.eks_all_nodes_security_group.id
 }

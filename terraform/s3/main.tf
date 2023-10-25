@@ -5,9 +5,10 @@ variable "bucket_name" {
   default = "ecom-app-products-s3-bucket"
 }
 
-locals {
-  data_source = "../../e_com_products"
-} 
+variable "source_directory" {
+  type    = string
+  default = "../../e_com_products"
+}
 
 // Create an S3 Bucket to store product images
 resource "aws_s3_bucket" "ecom_app_products_s3_bucket" {
@@ -15,12 +16,11 @@ resource "aws_s3_bucket" "ecom_app_products_s3_bucket" {
 }
 
 // Upload all image files from the source directory to the S3 Bucket
-resource "aws_s3_object" "ecom_app_s3_bucket_objects" {
-  for_each = fileset(local.data_source, "*")
-  bucket = aws_s3_bucket.ecom_app_products_s3_bucket.bucket
+resource "aws_s3_bucket_object" "ecom_app_s3_bucket_objects" {
+  for_each = fileset(var.source_directory, "*")
+  bucket = aws_s3_bucket.ecom_app_products_s3_bucket.id
   key    = each.value
-  source = "${local.data_source}/${each.value}"
-  depends_on = [aws_s3_bucket.ecom_app_products_s3_bucket]
+  source = "${var.source_directory}/${each.value}"
 }
 
 // Output Bucket ID and ARN
@@ -33,3 +33,4 @@ output "bucket_arn" {
   description = "S3 Bucket ARN"
   value       = aws_s3_bucket.ecom_app_products_s3_bucket.arn
 }
+

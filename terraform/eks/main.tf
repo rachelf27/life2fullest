@@ -1,5 +1,15 @@
 // terraform/eks_cluster.tf 
 
+variable "alb_dns_name" {
+  description = "Application Load Balancer DNS Name"
+  type        = string
+}
+
+variable "sg_elb_id" {
+  description = "Application Load Balancer Security Group Id"
+  type        = string
+}
+
 variable "subnet_id_1" {
   description = "Subnet Id 1"
   type        = string
@@ -55,6 +65,10 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
+  enable_irsa = false
+  create_cluster_security_group = false
+  create_node_security_group    = false
+
   vpc_id     = var.vpc_id
   subnet_ids = [var.subnet_id_1, var.subnet_id_2]
 
@@ -76,6 +90,14 @@ module "eks" {
 
   # Extend node-to-node security group rules
   node_security_group_additional_rules = {
+    # allow connections from ALB security group
+    ingress_allow_access_from_alb_sg = {
+      type                     = "ingress"
+      protocol                 = "-1"
+      from_port                = 0
+      to_port                  = 0
+      source_security_group_id = [var.sg_elb_id]
+    }
     ingress_self_all = {
       description = "Node to node all ports/protocols"
       protocol    = "-1"
@@ -104,8 +126,12 @@ module "eks" {
     enable_bootstrap_user_data    = true
     user_data_template_path       = "./userData.sh"
     iam_role_name                 = var.iam_role_name
+    iam_role_additional_policies = {
+      AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    }
     key_name                      = var.key_name
     additional_security_group_ids = [var.sg_eks_all_nodes_id]
+    create_security_group = false
   }
 
   eks_managed_node_groups = {
