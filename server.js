@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-/// Home route
+// Home route
 app.use("/", require("./routes/home"));
 
 // Public routes

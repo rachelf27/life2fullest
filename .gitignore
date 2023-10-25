@@ -17,6 +17,8 @@ npm-debug.log
 .terraformrc
 terraform.rc
 .tfplan
+tfplan
+tfplan.json
 .terraform.lock.hcl
 
 # Binaries
@@ -26,3 +28,5 @@ kubectl
 .dockerignore
 *.code-workspace
 *.pem
+/temp_work
+aws-k8s-cni-old.yaml

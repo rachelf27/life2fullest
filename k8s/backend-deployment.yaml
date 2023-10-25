@@ -1,7 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: life2fullest-backend
+  name: life2fullest-backend-deployment
+  namespace: e-com-app-eks-cluster-app
+  labels:
+    app: life2fullest-backend
 spec:
   replicas: 2
   selector:
@@ -12,29 +15,28 @@ spec:
       labels:
         app: life2fullest-backend
     spec:
+      affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/arch
+                  operator: In
+                  values:
+                  - amd64
+                  - arm64
       containers:
-        - name: life2fullest-backend
-          image: rachelvf27/life2fullest-backend:latest
-          ports:
-            - containerPort: 8000
-          resources:
+      - name: life2fullest-backend
+        image: rachelvf27/life2fullest-backend:latest
+        ports:
+        - containerPort: 8080
+        resources:
             requests: # Minimum resources required
               memory: "64Mi"
               cpu: "250m"
             limits: # Maximum resources that can be used
               memory: "128Mi"
               cpu: "500m"
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: life2fullest-backend-service
-spec:
-  selector:
-    app: life2fullest-backend # Selects any pod with this label
-  ports:
-    - protocol: TCP
-      port: 80 # The port that the service will be exposed on
-      targetPort: 8000 # The port that is exposed by the selected pods
-  type: ClusterIP # Makes the service reachable only within the cluster
+        imagePullPolicy: IfNotPresent
+      nodeSelector:
+        kubernetes.io/os: linux

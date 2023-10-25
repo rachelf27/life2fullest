@@ -12,8 +12,8 @@ import Navigation from "./components/Navigation/Navigation";
 
 render(
   <Router>
-    <Navigation />
     <App>
+      <Navigation />
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/shop" element={<Shop />} />

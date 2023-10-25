@@ -23,10 +23,12 @@ const getS3ImageUrls = async () => {
   const data = await s3Client.send(command);
 
   const urls = {};
+  if (data.Contents && data.Contents.length > 0) {
   data.Contents.forEach((content) => {
     const productName = content.Key.split(".")[0];
     urls[productName] = `https://${bucketName}.s3.amazonaws.com/${content.Key}`;
   });
+}
 
   return urls;
 };
